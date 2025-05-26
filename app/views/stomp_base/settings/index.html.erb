@@ -1,0 +1,63 @@
+<div style="margin-bottom: 2rem;">
+  <h1 style="color: #2c3e50;"><%= t('stomp_base.settings.title') %></h1>
+</div>
+
+<div style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;">
+  <div style="background: #2c3e50; color: white; padding: 1rem;">
+    <h2 style="margin: 0;">アプリケーション設定</h2>
+  </div>
+  
+  <div style="padding: 2rem;">
+    <%= form_with url: stomp_base.settings_path, method: :patch, local: true do |form| %>
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+          <%= t('stomp_base.settings.language') %>
+        </label>
+        <p style="color: #6c757d; font-size: 0.875rem; margin-bottom: 1rem;">
+          <%= t('stomp_base.settings.language_description') %>
+        </p>
+        
+        <%= form.select :locale, options_for_select([
+          ['日本語', 'ja'],
+          ['English', 'en']
+        ], session[:stomp_base_locale] || I18n.default_locale), 
+        {}, 
+        { style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;" } %>
+      </div>
+      
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+          <%= t('stomp_base.settings.theme') %>
+        </label>
+        <%= form.select :theme, options_for_select([
+          ['ライト', 'light'],
+          ['ダーク', 'dark']
+        ], 'light'), 
+        {}, 
+        { style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;" } %>
+      </div>
+      
+      <div style="display: flex; gap: 1rem;">
+        <%= form.submit t('stomp_base.settings.save'), 
+            style: "padding: 0.75rem 2rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;" %>
+        
+        <%= link_to t('stomp_base.settings.reset'), stomp_base.settings_path, 
+            method: :delete,
+            confirm: "設定をリセットしてもよろしいですか？",
+            style: "padding: 0.75rem 2rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-weight: 500;" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if flash[:notice] %>
+  <div style="background: #d4edda; color: #155724; padding: 1rem; margin-top: 1rem; border-radius: 4px;">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div style="background: #f8d7da; color: #721c24; padding: 1rem; margin-top: 1rem; border-radius: 4px;">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
