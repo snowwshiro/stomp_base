@@ -10,10 +10,11 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/snowwshiro/stomp_base"
   spec.license       = "MIT"
 
-  spec.files         = Dir["{app,lib,frontend}/**/*", "README.md", "Gemfile", "Rakefile"]
+  spec.files         = Dir["{app,lib,frontend,config}/**/*", "README.md", "LICENSE", "Rakefile", "CHANGELOG.md"]
   spec.require_paths  = ["lib"]
+  spec.required_ruby_version = ">= 3.0.0"
 
-  spec.add_dependency "rails", ">= 7.0"
+  spec.add_dependency "rails", "~> 7.0"
 
   spec.metadata["source_code_uri"] = "https://github.com/snowwshiro/stomp_base"
   spec.metadata["changelog_uri"] = "https://github.com/snowwshiro/stomp_base/blob/main/CHANGELOG.md"
