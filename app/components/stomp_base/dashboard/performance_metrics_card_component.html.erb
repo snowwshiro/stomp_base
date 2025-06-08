@@ -1,0 +1,31 @@
+<!-- Performance Metrics Card -->
+<div class="stomp-base-card">
+  <div style="background: linear-gradient(to right, #8b5cf6, #7c3aed); padding: 0.75rem; margin: -0.875rem -0.875rem 0.75rem -0.875rem; border-radius: 0.5rem 0.5rem 0 0;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; color: white; display: flex; align-items: center; margin: 0;">
+      <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+      <%= t('stomp_base.dashboard.performance_metrics') %>
+    </h3>
+  </div>
+  <div style="padding: 0.375rem 0;">
+    <div style="margin-bottom: 0.625rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.1875rem;">
+        <span style="font-size: 0.6875rem; color: #6b7280;"><%= t('stomp_base.dashboard.uptime') %></span>
+        <span style="font-size: 0.6875rem; font-weight: 600; color: #111827;"><%= performance_info[:uptime_formatted] %></span>
+      </div>
+      <div class="stomp-base-progress-bar" style="height: 0.375rem;">
+        <div class="stomp-base-progress-fill" style="background-color: #f97316; width: <%= [performance_info[:uptime] / 86400.0 * 100, 100].min %>%;"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.1875rem;">
+        <span style="font-size: 0.6875rem; color: #6b7280;"><%= t('stomp_base.dashboard.memory') %></span>
+        <span style="font-size: 0.6875rem; font-weight: 600; color: #111827;"><%= performance_info[:memory] %> MB</span>
+      </div>
+      <div class="stomp-base-progress-bar" style="height: 0.375rem;">
+        <div class="stomp-base-progress-fill" style="background-color: #ef4444; width: <%= [memory_percentage, 100].min %>%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

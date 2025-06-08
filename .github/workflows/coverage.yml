@@ -1,0 +1,49 @@
+name: Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.4'
+        bundler-cache: true
+    
+    - name: Install dependencies
+      run: |
+        bundle config set --local deployment false
+        bundle config set --local frozen false
+        bundle install
+        cd spec/rails_demo
+        bundle install
+    
+    - name: Run stomp_base unit tests with coverage
+      run: |
+        COVERAGE=true bundle exec rspec spec/lib spec/unit
+      env:
+        COVERAGE: true
+    
+    - name: Run Rails demo tests with coverage
+      run: |
+        cd spec/rails_demo
+        COVERAGE=true bundle exec rspec
+      env:
+        COVERAGE: true
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov/stomp_base.lcov
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false

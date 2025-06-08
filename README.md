@@ -1,15 +1,35 @@
 # 🎛️ Stomp Base
 
-A Rails engine that provides a browser-based admin interface and Rails console for your applications.
+[![CI](https://github.com/snowwshiro/stomp_base/workflows/CI/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/ci.yml)
+[![Code Quality](https://github.com/snowwshiro/stomp_base/workflows/Code%20Quality/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/code-quality.yml)
+[![Coverage](https://github.com/snowwshiro/stomp_base/workflows/Coverage/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/coverage.yml)
+[![Gem Version](https://badge.fury.io/rb/stomp_base.svg)](https://badge.fury.io/rb/stomp_base)
+[![Documentation](https://img.shields.io/badge/docs-yard-blue.svg)](https://snowwshiro.github.io/stomp_base/docs)
+
+A modern Rails engine that provides a beautiful, component-based admin interface and Rails console for your applications.
+
+## Name Origin
+
+The name "stomp_base" comes from the snowboarding term "stomp", which means a perfect landing - a flawless, solid touchdown after a jump or trick. Just as a perfect stomp represents complete control and successful execution in snowboarding, this gem aims to provide the solid foundation and perfect support for the complete execution of your Rails projects.
 
 ## Features
 
 - 📊 **Dashboard**: Real-time Rails application statistics and system information
-- 💻 **Browser Console**: Execute Ruby code directly in your Rails environment  
-- 🎨 **Modern UI**: Clean, responsive interface
+- 💻 **Browser Console**: Execute Ruby code directly in your Rails environment with enhanced security
+- 🎨 **Modern UI**: Built with View Components for a responsive, beautiful interface
+- 🔧 **Component-Based**: Modular View Components for easy customization and extension
+- 📖 **Lookbook Integration**: Component development and documentation with Lookbook
 - 🌐 **Multi-language Support**: English and Japanese interface
 - 🔧 **Easy Integration**: Simple gem installation and mounting process
 - 🔐 **Built-in Authentication**: Simple authentication options (Basic Auth, API keys, Custom)
+- ⚡ **Stimulus Controllers**: Modern JavaScript interactions with Stimulus
+
+## Technology Stack
+
+- **View Components**: For reusable, testable view components
+- **Stimulus**: For JavaScript interactions
+- **Lookbook**: For component development and documentation
+- **Turbo**: For fast, modern web navigation
 
 ## Installation
 
@@ -25,14 +45,33 @@ Then, execute:
 bundle install
 ```
 
-## Usage
+## Setup
 
-After installing the gem, you can mount the engine in your `routes.rb` file:
+After installing the gem, you need to:
 
+1. **Mount the engine** in your `routes.rb` file:
 ```ruby
 Rails.application.routes.draw do
   mount StompBase::Engine => "/stomp_base"
 end
+```
+
+2. **Install View Component** (automatically included as dependency):
+The gem includes View Component as a dependency, so no additional setup is required.
+
+## Usage
+
+### Accessing the Dashboard
+
+Visit `/stomp_base` in your browser to access the admin dashboard.
+
+### Component Development with Lookbook
+
+In development mode, you can access Lookbook for component development and documentation:
+
+```bash
+rails server
+# Visit http://localhost:3000/lookbook
 ```
 
 ### Language Configuration
@@ -133,11 +172,69 @@ To contribute to Stomp Base, clone the repository and run the following commands
 bundle install
 ```
 
-To run tests, use:
+### Testing Architecture
 
+This project separates tests into two categories for optimal performance and clarity:
+
+#### Pure Ruby Logic Tests (`spec/lib/` and `spec/unit/`)
+
+Tests for core StompBase logic that doesn't require Rails or UI components:
+- Configuration tests (`spec/unit/configuration_spec.rb`)
+- Core module tests (`spec/lib/`)
+- Helper methods  
+- Business logic
+
+These tests use only `spec_helper.rb` and don't require heavy Rails dependencies.
+
+**Run logic tests:**
+```bash
+bundle exec rspec spec/lib/ spec/unit/
+```
+
+#### Rails/UI Tests (`spec/rails_demo/`)
+
+Tests for Rails-specific features like:
+- ViewComponents
+- Controllers
+- Integration tests
+
+These tests run within the rails_demo application environment and have access to all Rails features.
+
+**Run Rails/UI tests:**
+```bash
+cd spec/rails_demo
+bundle install
+bundle exec rspec spec/
+```
+
+#### Test Helper File Updates
+
+**Important:** The main `spec/rails_helper.rb` is now deprecated. Use the appropriate helper based on your test type:
+
+- **For pure Ruby logic tests**: Use `spec_helper.rb`
+- **For Rails-based tests**: Use `spec/rails_demo/spec/rails_helper.rb`
+
+The deprecated `spec/rails_helper.rb` will show warnings and automatically redirect to the appropriate helper file.
+
+#### Testing Benefits
+
+This separation allows:
+1. **Faster pure logic tests** - No need to boot Rails or load heavy dependencies
+2. **Isolated dependencies** - Main gem doesn't need to include Rails development dependencies  
+3. **Clear separation of concerns** - Business logic vs UI/Rails logic
+
+#### Test Migration Notes
+
+- ComponentTests moved from `spec/components/` to `spec/rails_demo/spec/components/`
+- Controller tests moved from `spec/controllers/` to `spec/rails_demo/spec/controllers/`
+- Pure Ruby tests remain in `spec/lib/`
+
+**Run all tests:**
 ```bash
 rspec
 ```
+
+
 
 ## API Reference
 
@@ -393,9 +490,7 @@ The authentication feature is implemented with the following approach:
 
 - `lib/stomp_base/authentication.rb` - Authentication feature implementation
 - `lib/stomp_base/configuration.rb` - Added authentication configuration functionality
-- `spec/controllers/stomp_base/authentication_spec.rb` - Controller tests
-- `spec/lib/stomp_base/configuration_spec.rb` - Configuration class tests
-- `spec/unit/configuration_spec.rb` - Unit tests
+- `spec/unit/configuration_spec.rb` - Unit tests for configuration class
 
 #### 🔧 Modified Files
 
@@ -418,6 +513,137 @@ Authentication feature implementation is complete. The following extensions are 
 - Rate limiting functionality
 - Dynamic authentication configuration changes
 - Addition of more authentication methods
+
+## Contributing
+
+We welcome contributions to Stomp Base! Here's how you can help:
+
+### Getting Started
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/stomp_base.git
+   cd stomp_base
+   ```
+3. **Install dependencies**:
+   ```bash
+   bundle install
+   ```
+4. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+### Development Setup
+
+1. **Run the test suite** to ensure everything works:
+   ```bash
+   rspec
+   ```
+
+2. **Start the demo application** for testing:
+   ```bash
+   cd spec/rails_demo
+   bundle install
+   rails server -p 3001
+   ```
+   Visit `http://localhost:3001/stomp_base` to see your changes.
+
+3. **Run Lookbook** for component development:
+   ```bash
+   rails server
+   # Visit http://localhost:3001/rails/lookbook
+   ```
+
+### Making Changes
+
+1. **Write tests** for your changes in the `spec/` directory
+2. **Follow Ruby style guidelines** and ensure your code is properly formatted
+3. **Add or update documentation** as needed
+4. **Test your changes** thoroughly:
+   ```bash
+   rspec
+   ```
+
+### Types of Contributions
+
+- 🐛 **Bug fixes**: Fix issues or unexpected behavior
+- ✨ **New features**: Add new functionality to the engine
+- 📚 **Documentation**: Improve or add documentation
+- 🎨 **UI/UX improvements**: Enhance the user interface
+- 🌐 **Translations**: Add support for new languages
+- 🧪 **Tests**: Improve test coverage
+- 🔧 **Refactoring**: Improve code quality without changing functionality
+
+### Submitting Changes
+
+1. **Commit your changes** with clear, descriptive messages:
+   ```bash
+   git add .
+   git commit -m "Add: Brief description of your changes"
+   ```
+
+2. **Push to your fork**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+3. **Create a Pull Request** on GitHub with:
+   - Clear title and description
+   - Reference to any related issues
+   - Screenshots for UI changes
+   - Test results confirmation
+
+### Pull Request Guidelines
+
+- **Keep PRs focused**: One feature or fix per PR
+- **Write clear descriptions**: Explain what changes you made and why
+- **Include tests**: All new code should have appropriate tests
+- **Update documentation**: Update README or other docs if needed
+- **Follow existing patterns**: Match the existing code style and architecture
+
+### Code Style
+
+- Follow Ruby community standards
+- Use meaningful variable and method names
+- Add comments for complex logic
+- Keep methods small and focused
+- Use ViewComponent patterns for new UI components
+
+### Testing
+
+- Write RSpec tests for new functionality
+- Ensure all tests pass before submitting
+- Include both unit and integration tests where appropriate
+- Test edge cases and error conditions
+
+### Reporting Issues
+
+Found a bug or have a suggestion? Please:
+
+1. **Check existing issues** to avoid duplicates
+2. **Create a new issue** with:
+   - Clear, descriptive title
+   - Steps to reproduce (for bugs)
+   - Expected vs actual behavior
+   - Ruby/Rails version information
+   - Any relevant error messages
+
+### Questions and Support
+
+- **GitHub Issues**: For bug reports and feature requests
+- **GitHub Discussions**: For questions and general discussion
+- **Pull Requests**: For code contributions
+
+### Recognition
+
+Contributors will be acknowledged in:
+- GitHub contributors list
+- Release notes for significant contributions
+- This README (if you make substantial contributions)
+
+Thank you for helping make Stomp Base better! 🙏
 
 ## License
 

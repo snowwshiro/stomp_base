@@ -72,3 +72,27 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Rails demo app specific ignores
+/spec/rails_demo/log/*.log
+/spec/rails_demo/tmp/
+/spec/rails_demo/storage/
+/spec/rails_demo/public/assets/
+/spec/rails_demo/public/packs/
+/spec/rails_demo/public/packs-test/
+/spec/rails_demo/node_modules/
+/spec/rails_demo/yarn-error.log
+/spec/rails_demo/coverage/
+/spec/rails_demo/.byebug_history
+/spec/rails_demo/.sass-cache/
+/spec/rails_demo/vendor/bundle/
+
+# CI/CD artifacts
+/brakeman-results.json
+/reek-results.json
+/lookbook-build/
+/.vscode/
+
+# Coverage reports
+/coverage/
+/coverage.lcov

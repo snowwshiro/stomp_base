@@ -1,0 +1,25 @@
+<!-- Runtime Information Card -->
+<div class="stomp-base-card">
+  <div style="background: linear-gradient(to right, #4b5563, #374151); padding: 0.75rem; margin: -0.875rem -0.875rem 0.75rem -0.875rem; border-radius: 0.5rem 0.5rem 0 0;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; color: white; display: flex; align-items: center; margin: 0;">
+      <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <%= t('stomp_base.dashboard.runtime_info') %>
+    </h3>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr; gap: 0.625rem; padding: 0.375rem 0;">
+    <div style="text-align: center;">
+      <div style="font-size: 0.6875rem; color: #6b7280;"><%= t('stomp_base.dashboard.host') %></div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: #111827;"><%= system_info[:host] %></div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 0.6875rem; color: #6b7280;"><%= t('stomp_base.dashboard.platform') %></div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: #111827;"><%= system_info[:platform] %></div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 0.6875rem; color: #6b7280;"><%= t('stomp_base.dashboard.current_time') %></div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: #111827;"><%= system_info[:current_time].strftime('%H:%M:%S') %></div>
+    </div>
+  </div>
+</div>

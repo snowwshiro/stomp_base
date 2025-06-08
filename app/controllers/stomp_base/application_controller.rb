@@ -1,25 +1,37 @@
-class StompBase::ApplicationController < ActionController::Base
-  include StompBase::I18nHelper
-  include StompBase::Authentication
-  
-  layout 'stomp_base/application'
+# frozen_string_literal: true
 
-  before_action :set_locale
+module StompBase
+  class ApplicationController < ActionController::Base
+    include StompBase::I18nHelper
+    include StompBase::Authentication
 
-  # ヘルパーメソッドとしてI18nHelperのメソッドを追加
-  helper_method :available_locales, :current_locale, :locale_name
+    layout "stomp_base/application"
 
-  private
+    before_action :set_locale
 
-  def set_locale
-    # セッションから保存されたロケールを復元、なければ設定から取得
-    locale = session[:stomp_base_locale] || StompBase.locale
-    
-    if StompBase.configuration.available_locales.include?(locale.to_sym)
-      I18n.locale = locale
-      StompBase.locale = locale
-    else
-      I18n.locale = StompBase.locale
+    # Add I18nHelper methods as helper methods
+    helper_method :available_locales, :current_locale, :locale_name, :current_theme
+
+    def index
+      render plain: "StompBase Application Controller"
+    end
+
+    private
+
+    def set_locale
+      # Restore saved locale from session, or get from configuration if not found
+      requested_locale = session[:stomp_base_locale] || StompBase.locale
+
+      if StompBase.configuration.available_locales.include?(requested_locale.to_sym)
+        I18n.locale = requested_locale
+        StompBase.locale = requested_locale
+      else
+        I18n.locale = StompBase.locale
+      end
+    end
+
+    def current_theme
+      session[:stomp_base_theme] || "light"
     end
   end
 end

@@ -1,0 +1,41 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  yard:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.4'
+        bundler-cache: true
+    
+    - name: Install dependencies
+      run: |
+        bundle config set --local deployment false
+        bundle config set --local frozen false
+        bundle install
+    
+    - name: Generate documentation
+      run: bundle exec yard doc
+    
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: yard-documentation
+        path: doc/
+    
+    - name: Deploy to GitHub Pages (main branch only)
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

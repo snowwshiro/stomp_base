@@ -1,76 +1,8 @@
-<div style="margin-bottom: 2rem;">
-  <h1 style="color: #2c3e50; margin-bottom: 1rem;"><%= t('stomp_base.dashboard.welcome') %></h1>
-  <p style="color: #6c757d;"><%= t('stomp_base.dashboard.rails_dashboard_title') %></p>
-</div>
-
-<div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-  <!-- Application Stats -->
-  <div class="dashboard-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h2 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.3rem;"><%= t('stomp_base.dashboard.application_stats') %></h2>
-    <div style="display: grid; gap: 1rem;">
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.rails_version') %>:</span>
-        <strong><%= Rails.version %></strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.ruby_version') %>:</span>
-        <strong><%= RUBY_VERSION %></strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.environment') %>:</span>
-        <strong><%= Rails.env %></strong>
-      </div>
-    </div>
-  </div>
-
-  <!-- Quick Actions -->
-  <div class="dashboard-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h2 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.3rem;"><%= t('stomp_base.dashboard.quick_actions') %></h2>
-    <div style="display: grid; gap: 1rem;">
-      <%= link_to t('stomp_base.dashboard.open_console'), stomp_base.console_path, 
-          class: "dashboard-button", 
-          style: "display: block; padding: 0.75rem 1rem; background: #3498db; color: white; text-decoration: none; border-radius: 4px; text-align: center; transition: background-color 0.2s;" %>
-      <%= link_to t('stomp_base.dashboard.view_models'), stomp_base.models_path, 
-          class: "dashboard-button", 
-          style: "display: block; padding: 0.75rem 1rem; background: #2ecc71; color: white; text-decoration: none; border-radius: 4px; text-align: center; transition: background-color 0.2s;" %>
-    </div>
-  </div>
-
-  <!-- System Information -->
-  <div class="dashboard-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h2 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.3rem;"><%= t('stomp_base.dashboard.system_information') %></h2>
-    <div style="display: grid; gap: 1rem;">
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.host') %>:</span>
-        <strong><%= Socket.gethostname rescue 'Unknown' %></strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.platform') %>:</span>
-        <strong><%= RUBY_PLATFORM %></strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
-        <span><%= t('stomp_base.dashboard.process_id') %>:</span>
-        <strong><%= Process.pid %></strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
-        <span><%= t('stomp_base.dashboard.current_time') %>:</span>
-        <strong><%= Time.current.strftime("%Y-%m-%d %H:%M:%S %Z") %></strong>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  .dashboard-button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-  
-  .dashboard-card {
-    transition: box-shadow 0.2s;
-  }
-  
-  .dashboard-card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-</style>
+<%= render StompBase::LayoutComponent.new(
+  title: t('stomp_base.dashboard.title'),
+  breadcrumbs: [
+    { name: t('stomp_base.navigation.dashboard'), url: nil }
+  ]
+) do %>
+  <%= render @dashboard_component %>
+<% end %>

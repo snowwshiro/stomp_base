@@ -1,0 +1,77 @@
+# RuboCop configuration for stomp_base gem
+
+AllCops:
+  TargetRubyVersion: 3.0
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'spec/rails_demo/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'node_modules/**/*'
+
+require:
+  - rubocop-rspec
+
+plugins:
+  - rubocop-rails
+  - rubocop-capybara
+  - rubocop-factory_bot
+
+# Metrics
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+    - 'lib/tasks/**/*.rake'
+    - '*.gemspec'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/ClassLength:
+  Max: 170
+  Exclude:
+    - 'spec/**/*'
+
+# Layout
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+
+# Style
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  SafeAutoCorrect: true
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+# Rails specific - remove obsolete Rails cops
+# Rails/FilePath and Rails/OutputSafety should be handled by rubocop-rails plugin
+
+# RSpec specific  
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false

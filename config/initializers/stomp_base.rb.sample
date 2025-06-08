@@ -1,65 +1,65 @@
-# StompBase設定サンプル
-# このファイルをconfig/initializers/stomp_base.rbにコピーして使用してください
+# StompBase Configuration Sample
+# Copy this file to config/initializers/stomp_base.rb to use it
 
 StompBase.configure do |config|
-  # ロケール設定
-  config.locale = :ja  # または :en
+  # Locale setting
+  config.locale = :ja  # or :en
   
-  # === 認証設定の例 ===
+  # === Authentication Configuration Examples ===
   
-  # 1. Basic認証を使用する場合
+  # 1. Using Basic Authentication
   # config.enable_authentication(
   #   method: :basic_auth,
   #   username: 'admin',
-  #   password: 'your_secure_password'  # 本番環境では ENV['PASSWORD'] を使用推奨
+  #   password: 'your_secure_password'  # Recommended to use ENV['PASSWORD'] in production
   # )
   
-  # 2. APIキー認証を使用する場合
+  # 2. Using API Key Authentication
   # config.enable_authentication(
   #   method: :api_key,
-  #   keys: ['your-api-key-1', 'your-api-key-2']  # 本番環境では ENV['API_KEYS'].split(',') を使用推奨
+  #   keys: ['your-api-key-1', 'your-api-key-2']  # Recommended to use ENV['API_KEYS'].split(',') in production
   # )
   
-  # 3. カスタム認証を使用する場合
+  # 3. Using Custom Authentication
   # config.enable_authentication(
   #   method: :custom,
   #   authenticator: ->(request, params) {
-  #     # 独自の認証ロジックを実装
-  #     # trueを返すと認証成功、falseを返すと認証失敗
+  #     # Implement your custom authentication logic
+  #     # Return true for successful authentication, false for failure
   #     token = request.headers['Authorization']
-  #     # 例: JWT認証、独自トークン認証など
+  #     # Example: JWT authentication, custom token authentication, etc.
   #     token == "Bearer #{ENV['SECRET_TOKEN']}"
   #   }
   # )
   
-  # 4. 環境別設定の例
+  # 4. Environment-specific Configuration Examples
   if Rails.env.production?
-    # 本番環境では強固な認証
+    # Strong authentication for production environment
     config.enable_authentication(
       method: :api_key,
       keys: ENV['STOMP_BASE_API_KEYS']&.split(',') || []
     )
   elsif Rails.env.development?
-    # 開発環境では簡単な認証（必要に応じて）
+    # Simple authentication for development environment (if needed)
     # config.enable_authentication(
     #   method: :basic_auth,
     #   username: 'dev',
     #   password: 'dev'
     # )
     
-    # または開発環境では認証を無効化
+    # Or disable authentication in development environment
     config.disable_authentication
   else
-    # テスト環境では認証無効
+    # Disable authentication in test environment
     config.disable_authentication
   end
 end
 
-# === 設定後に使用可能なヘルパーメソッド ===
+# === Helper Methods Available After Configuration ===
 # 
-# 認証状態の確認:
+# Check authentication status:
 # StompBase.authentication_enabled?
 # 
-# 動的な認証設定変更:
+# Dynamic authentication configuration changes:
 # StompBase.enable_authentication(method: :basic_auth, username: 'user', password: 'pass')
 # StompBase.disable_authentication

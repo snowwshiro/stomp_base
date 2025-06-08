@@ -4,13 +4,10 @@ module StompBase
   module I18nHelper
     def t(key, options = {})
       # For StompBase-specific translation keys, automatically add prefix
-      if key.is_a?(String) && !key.start_with?('stomp_base.')
-        key = "stomp_base.#{key}"
-      elsif key.is_a?(Symbol)
-        key = "stomp_base.#{key}"
-      end
+      key_string = key.to_s
+      key = "stomp_base.#{key_string}" unless key_string.start_with?("stomp_base.")
 
-      I18n.t(key, **options.merge(locale: StompBase.locale))
+      I18n.t(key, **options, locale: StompBase.locale)
     end
 
     def available_locales
@@ -24,9 +21,9 @@ module StompBase
     def locale_name(locale)
       case locale.to_sym
       when :en
-        'English'
+        "English"
       when :ja
-        '日本語'
+        "日本語"
       else
         locale.to_s.capitalize
       end
