@@ -1,0 +1,30 @@
+<!-- Quick Stats Summary -->
+<div class="stomp-base-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #0284c7; grid-column: span 2;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.625rem;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0369a1; margin: 0; display: flex; align-items: center;">
+      <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+      </svg>
+      <%= t('stomp_base.dashboard.system_overview_stats') %>
+    </h3>
+    <span style="font-size: 0.625rem; color: #0284c7; background-color: rgba(2, 132, 199, 0.1); padding: 0.125rem 0.25rem; border-radius: 9999px;"><%= t('stomp_base.dashboard.realtime') %></span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem;">
+    <div style="text-align: center; padding: 0.625rem; background-color: rgba(255,255,255,0.7); border-radius: 0.5rem; border: 1px solid rgba(2, 132, 199, 0.2);">
+      <div style="font-size: 1.25rem; font-weight: 700; color: #0369a1; margin-bottom: 0.125rem;"><%= system_info[:tables] %></div>
+      <div style="font-size: 0.625rem; color: #0284c7; font-weight: 500;"><%= t('stomp_base.dashboard.database_tables') %></div>
+    </div>
+    <div style="text-align: center; padding: 0.625rem; background-color: rgba(255,255,255,0.7); border-radius: 0.5rem; border: 1px solid rgba(2, 132, 199, 0.2);">
+      <div style="font-size: 1.25rem; font-weight: 700; color: #0369a1; margin-bottom: 0.125rem;"><%= performance_info[:memory] %></div>
+      <div style="font-size: 0.625rem; color: #0284c7; font-weight: 500;"><%= t('stomp_base.dashboard.memory_usage_mb') %></div>
+    </div>
+    <div style="text-align: center; padding: 0.625rem; background-color: rgba(255,255,255,0.7); border-radius: 0.5rem; border: 1px solid rgba(2, 132, 199, 0.2);">
+      <div style="font-size: 1.25rem; font-weight: 700; color: #0369a1; margin-bottom: 0.125rem;"><%= Time.current.strftime('%H:%M') %></div>
+      <div style="font-size: 0.625rem; color: #0284c7; font-weight: 500;"><%= t('stomp_base.dashboard.current_time_label') %></div>
+    </div>
+    <div style="text-align: center; padding: 0.625rem; background-color: rgba(255,255,255,0.7); border-radius: 0.5rem; border: 1px solid rgba(2, 132, 199, 0.2);">
+      <div style="font-size: 1.25rem; font-weight: 700; color: #0369a1; margin-bottom: 0.125rem;"><%= system_info[:environment].upcase %></div>
+      <div style="font-size: 0.625rem; color: #0284c7; font-weight: 500;"><%= t('stomp_base.dashboard.environment_label') %></div>
+    </div>
+  </div>
+</div>

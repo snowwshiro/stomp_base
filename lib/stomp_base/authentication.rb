@@ -11,9 +11,7 @@ module StompBase
     private
 
     def authenticate_stomp_base
-      auth_method = StompBase.configuration.authentication_method
-
-      case auth_method
+      case StompBase.configuration.authentication_method
       when :basic_auth
         authenticate_with_basic_auth
       when :api_key
@@ -21,7 +19,7 @@ module StompBase
       when :custom
         authenticate_with_custom_method
       else
-        render_authentication_error("Unknown authentication method: #{auth_method}")
+        render_authentication_error("Unknown authentication method")
       end
     end
 
@@ -33,32 +31,26 @@ module StompBase
     end
 
     def authenticate_with_api_key
-      api_key = request.headers['X-API-Key'] || params[:api_key]
-      
-      unless api_key && StompBase.configuration.valid_api_keys.include?(api_key)
-        render_authentication_error("Invalid or missing API key")
-      end
+      api_key = request.headers["X-API-Key"] || params[:api_key]
+
+      return if api_key && StompBase.configuration.valid_api_keys.include?(api_key)
+
+      render_authentication_error("Invalid or missing API key")
     end
 
     def authenticate_with_custom_method
       custom_authenticator = StompBase.configuration.custom_authenticator
-      
-      unless custom_authenticator && custom_authenticator.call(request, params)
-        render_authentication_error("Custom authentication failed")
-      end
+
+      return if custom_authenticator&.call(request, params)
+
+      render_authentication_error("Custom authentication failed")
     end
 
     def render_authentication_error(message = "Authentication required")
       respond_to do |format|
-        format.html { 
-          render plain: message, status: :unauthorized 
-        }
-        format.json { 
-          render json: { error: message }, status: :unauthorized 
-        }
-        format.any { 
-          render plain: message, status: :unauthorized 
-        }
+        format.html { render plain: message, status: :unauthorized }
+        format.json { render json: { error: message }, status: :unauthorized }
+        format.any { render plain: message, status: :unauthorized }
       end
     end
   end

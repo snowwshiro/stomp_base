@@ -1,0 +1,149 @@
+<script>
+// Console functionality
+let consoleHistory = [];
+let historyIndex = -1;
+
+function executeConsoleCommand() {
+  const input = document.getElementById('console-input');
+  const output = document.getElementById('console-output');
+  const command = input.value.trim();
+  
+  if (!command) return;
+  
+  // Add to history
+  consoleHistory.unshift(command);
+  if (consoleHistory.length > 50) { // Limit history to 50 commands
+    consoleHistory = consoleHistory.slice(0, 50);
+  }
+  historyIndex = -1;
+  
+  // Show loading state
+  appendConsoleOutput(`> ${command}`, 'command');
+  appendConsoleOutput('<%= t('stomp_base.common.loading') %>...', 'info');
+  
+  // Execute command via AJAX
+  fetch('<%= StompBase::Engine.routes.url_helpers.console_execute_path %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ command: command })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Remove loading message
+    const loadingElement = output.lastElementChild;
+    if (loadingElement && loadingElement.textContent.includes('<%= t('stomp_base.common.loading') %>')) {
+      loadingElement.remove();
+    }
+    
+    if (data.success) {
+      appendConsoleOutput(data.result, data.error ? 'error' : 'success');
+    } else {
+      appendConsoleOutput(data.error || '<%= t('stomp_base.console.error') %>', 'error');
+    }
+  })
+  .catch(error => {
+    // Remove loading message
+    const loadingElement = output.lastElementChild;
+    if (loadingElement && loadingElement.textContent.includes('<%= t('stomp_base.common.loading') %>')) {
+      loadingElement.remove();
+    }
+    appendConsoleOutput(`<%= t('stomp_base.console.error') %>: ${error.message}`, 'error');
+  });
+  
+  // Clear input
+  input.value = '';
+  input.focus();
+}
+
+function appendConsoleOutput(text, type = 'output') {
+  const output = document.getElementById('console-output');
+  const div = document.createElement('div');
+  div.style.marginBottom = '0.5rem';
+  
+  // Set colors based on type
+  switch(type) {
+    case 'command':
+      div.style.color = '#60a5fa';
+      div.style.fontWeight = 'bold';
+      break;
+    case 'error':
+      div.style.color = '#f87171';
+      break;
+    case 'success':
+      div.style.color = '#34d399';
+      break;
+    case 'info':
+      div.style.color = '#fbbf24';
+      break;
+    default:
+      div.style.color = '#f9fafb';
+  }
+  
+  div.textContent = text;
+  
+  // Remove "no output" message if it exists
+  if (output.children.length === 1 && output.children[0].textContent.includes('<%= t('stomp_base.console.no_output') %>')) {
+    output.innerHTML = '';
+  }
+  
+  output.appendChild(div);
+  output.scrollTop = output.scrollHeight;
+}
+
+function clearConsoleOutput() {
+  const output = document.getElementById('console-output');
+  output.innerHTML = '<div style="color: #9ca3af; font-style: italic;"><%= t('stomp_base.console.no_output') %></div>';
+}
+
+function clearConsoleHistory() {
+  consoleHistory = [];
+  historyIndex = -1;
+}
+
+function insertExampleCommand(command) {
+  const input = document.getElementById('console-input');
+  input.value = command;
+  input.focus();
+}
+
+function handleConsoleKeydown(event) {
+  const input = event.target;
+  
+  // Execute on Enter (without Shift)
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    executeConsoleCommand();
+    return;
+  }
+  
+  // Allow Shift+Enter for new line (default behavior)
+  if (event.key === 'Enter' && event.shiftKey) {
+    // Let the default behavior handle the new line
+    return;
+  }
+  
+  // History navigation with Up/Down arrows
+  if (event.key === 'ArrowUp' && consoleHistory.length > 0) {
+    event.preventDefault();
+    historyIndex = Math.min(historyIndex + 1, consoleHistory.length - 1);
+    input.value = consoleHistory[historyIndex];
+  } else if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    if (historyIndex > 0) {
+      historyIndex--;
+      input.value = consoleHistory[historyIndex];
+    } else {
+      historyIndex = -1;
+      input.value = '';
+    }
+  }
+}
+
+// Focus input on page load
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('console-input').focus();
+});
+</script>

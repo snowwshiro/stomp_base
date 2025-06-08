@@ -1,0 +1,22 @@
+<h1>Welcome to StompBase Demo</h1>
+<p>This is a demo Rails application for testing the StompBase engine.</p>
+
+<div>
+  <h2>Available StompBase Routes:</h2>
+  <ul>
+    <li><%= link_to "Dashboard", stomp_base.root_path %></li>
+    <li><%= link_to "Console", stomp_base.console_path %></li>
+    <li><%= link_to "Models", stomp_base.models_path %></li>
+    <li><%= link_to "Settings", stomp_base.settings_path %></li>
+    <li><%= link_to "Application Test", stomp_base.application_path %></li>
+  </ul>
+</div>
+
+<% if Rails.env.development? %>
+  <div>
+    <h2>Development Tools:</h2>
+    <ul>
+      <li><%= link_to "Lookbook (Component Previews)", "/lookbook" %></li>
+    </ul>
+  </div>
+<% end %>

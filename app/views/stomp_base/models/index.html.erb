@@ -1,54 +1,9 @@
-<div style="margin-bottom: 2rem;">
-  <h1 style="color: #2c3e50;"><%= t('stomp_base.models.title') %></h1>
-</div>
-
-<div style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;">
-  <div style="background: #2c3e50; color: white; padding: 1rem;">
-    <h2 style="margin: 0;"><%= t('stomp_base.models.list') %></h2>
-  </div>
-  
-  <% if @models && @models.any? %>
-    <div style="padding: 2rem;">
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="background: #f8f9fa;">
-              <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;"><%= t('stomp_base.models.name') %></th>
-              <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;"><%= t('stomp_base.models.table_name') %></th>
-              <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;"><%= t('stomp_base.models.columns') %></th>
-              <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;"><%= t('stomp_base.models.records') %></th>
-              <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;"><%= t('stomp_base.models.actions') %></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @models.each do |model| %>
-              <tr style="border-bottom: 1px solid #dee2e6;">
-                <td style="padding: 1rem; font-weight: 500;"><%= model[:name] %></td>
-                <td style="padding: 1rem; color: #6c757d;"><%= model[:table_name] %></td>
-                <td style="padding: 1rem;">
-                  <span style="background: #e3f2fd; color: #1565c0; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.875rem;">
-                    <%= t('stomp_base.models.columns_with_count', count: model[:column_count]) %>
-                  </span>
-                </td>
-                <td style="padding: 1rem;">
-                  <span style="background: #f3e5f5; color: #7b1fa2; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.875rem;">
-                    <%= t('stomp_base.models.records_count', count: model[:record_count]) %>
-                  </span>
-                </td>
-                <td style="padding: 1rem;">
-                  <%= link_to t('stomp_base.models.view'), stomp_base.model_path(model[:name]), 
-                      style: "background: #3498db; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px; font-size: 0.875rem;" %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  <% else %>
-    <div style="padding: 3rem; text-align: center;">
-      <h3 style="color: #6c757d; margin-bottom: 1rem;"><%= t('stomp_base.models.no_models') %></h3>
-      <p style="color: #6c757d;">アプリケーションモデルが見つかりませんでした。</p>
-    </div>
-  <% end %>
-</div>
+<%= render StompBase::LayoutComponent.new(
+  title: t('stomp_base.navigation.models'),
+  breadcrumbs: [
+    { name: t('stomp_base.navigation.dashboard'), url: stomp_base.root_path },
+    { name: t('stomp_base.navigation.models'), url: nil }
+  ]
+) do %>
+  <%= render StompBase::Pages::ModelsListComponent.new(models: @models) %>
+<% end %>
