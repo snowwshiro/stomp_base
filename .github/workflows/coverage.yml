@@ -41,7 +41,7 @@ jobs:
         COVERAGE: true
     
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         file: ./coverage/lcov/stomp_base.lcov
         flags: unittests
