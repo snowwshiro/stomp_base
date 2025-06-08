@@ -29,3 +29,9 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
 end
+
+group :test do
+  # Test coverage
+  gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
+end

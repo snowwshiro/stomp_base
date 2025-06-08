@@ -84,31 +84,13 @@ jobs:
       continue-on-error: true
     
     # Bundle Audit job
-    - name: Add bundle-audit gem
-      if: matrix.job == 'bundle-audit'
-      run: |
-        echo 'gem "bundler-audit", require: false' >> Gemfile
-        bundle config set --local deployment false
-        bundle config set --local frozen false
-        bundle install
-    
-    - name: Update vulnerability database
-      if: matrix.job == 'bundle-audit'
-      run: bundle exec bundle-audit update
-    
     - name: Run bundle-audit
       if: matrix.job == 'bundle-audit'
-      run: bundle exec bundle-audit check
+      run: |
+        bundle exec bundle-audit update
+        bundle exec bundle-audit check
     
     # Reek job
-    - name: Add reek gem
-      if: matrix.job == 'reek'
-      run: |
-        echo 'gem "reek", require: false' >> Gemfile
-        bundle config set --local deployment false
-        bundle config set --local frozen false
-        bundle install
-    
     - name: Run Reek
       if: matrix.job == 'reek'
       run: bundle exec reek --format json lib/ > reek-results.json || true
@@ -132,13 +114,6 @@ jobs:
         ruby-version: '3.4'
         bundler-cache: true
         cache-version: ${{ github.run_id }}
-    
-    - name: Add Brakeman to Gemfile
-      run: |
-        echo 'gem "brakeman", require: false' >> Gemfile
-        bundle config set --local deployment false
-        bundle config set --local frozen false
-        bundle install
     
     - name: Run Brakeman security scan
       run: |

@@ -19,10 +19,8 @@ jobs:
         ruby-version: '3.4'
         bundler-cache: true
     
-    - name: Add SimpleCov to Gemfile
+    - name: Install dependencies
       run: |
-        echo 'gem "simplecov", require: false' >> Gemfile
-        echo 'gem "simplecov-lcov", require: false' >> Gemfile
         bundle config set --local deployment false
         bundle config set --local frozen false
         bundle install

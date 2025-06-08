@@ -19,10 +19,8 @@ jobs:
         ruby-version: '3.4'
         bundler-cache: true
     
-    - name: Install YARD
+    - name: Install dependencies
       run: |
-        echo 'gem "yard", require: false' >> Gemfile
-        echo 'gem "redcarpet", require: false' >> Gemfile
         bundle config set --local deployment false
         bundle config set --local frozen false
         bundle install
