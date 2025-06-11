@@ -1,0 +1,29 @@
+/*
+ * Console Page Styles
+ * Console interface, terminal styling, and command input
+ */
+
+/* Console specific styles */
+.stomp-base-console {
+  background-color: var(--console-bg);
+  color: var(--console-text);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  height: 24rem;
+  overflow-y: auto;
+}
+
+.stomp-base-console-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--console-text);
+  font-family: inherit;
+  width: 100%;
+}
+
+.stomp-base-console-input::placeholder {
+  color: var(--console-placeholder);
+}

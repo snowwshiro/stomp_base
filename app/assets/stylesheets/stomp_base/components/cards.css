@@ -1,0 +1,53 @@
+/*
+ * Card Components
+ * Standard and compact card styles with hover effects
+ */
+
+.stomp-base-card {
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  transition: var(--transition-normal);
+  border: 1px solid var(--border-card-light);
+}
+
+.stomp-base-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Compact card styles for dashboard */
+.stomp-base-card-compact {
+  background-color: var(--bg-card-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 0.625rem;
+  margin-bottom: var(--spacing-sm);
+  transition: var(--transition-normal);
+  border: 1px solid var(--border-card-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.stomp-base-card-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stomp-base-card-compact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), #8b5cf6, var(--status-success), var(--status-warning));
+  opacity: 0;
+  transition: var(--transition-opacity);
+}
+
+.stomp-base-card-compact:hover::before {
+  opacity: 1;
+}

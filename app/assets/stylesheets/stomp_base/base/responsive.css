@@ -1,0 +1,197 @@
+/*
+ * Responsive Styles
+ * Media queries for different screen sizes and responsive behavior
+ */
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .stomp-base-sidebar {
+    width: var(--sidebar-width-medium);
+  }
+  
+  .stomp-base-main-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .stomp-base-dashboard-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.375rem;
+  }
+  
+  .stomp-base-dashboard-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.375rem;
+  }
+  
+  .stomp-base-dashboard-actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.375rem;
+  }
+  
+  .stomp-base-card {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .stomp-base-sidebar-header h1 {
+    font-size: var(--font-size-sm);
+  }
+  
+  .stomp-base-sidebar-link {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-xs) 0.125rem;
+  }
+  
+  .stomp-base-sidebar-icon {
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .stomp-base-sidebar {
+    width: var(--sidebar-width-small);
+  }
+  
+  .stomp-base-main-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .stomp-base-dashboard-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-sm);
+  }
+  
+  .stomp-base-dashboard-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+  }
+  
+  .stomp-base-dashboard-actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+  }
+  
+  .stomp-base-system-overview {
+    grid-column: span 1;
+  }
+  
+  /* Quick stats responsive */
+  .stomp-base-card[style*="grid-column: span 2"] {
+    grid-column: span 1;
+  }
+  
+  .stomp-base-sidebar-header h1 {
+    font-size: var(--font-size-base);
+  }
+  
+  .stomp-base-sidebar-link {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .stomp-base-sidebar-icon {
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
+    margin-right: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 768px) {
+  .stomp-base-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .stomp-base-main-content {
+    margin-left: 0;
+  }
+  
+  .stomp-base-sidebar-layout {
+    flex-direction: column;
+  }
+  
+  .stomp-base-sidebar-link {
+    justify-content: flex-start;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+  }
+  
+  .stomp-base-sidebar-icon {
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
+    margin-right: var(--spacing-md);
+  }
+  
+  .stomp-base-main-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .stomp-base-dashboard-grid,
+  .stomp-base-dashboard-info-grid,
+  .stomp-base-dashboard-actions-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .stomp-base-system-overview {
+    grid-column: span 1;
+  }
+  
+  .stomp-base-card,
+  .stomp-base-card-compact {
+    padding: var(--spacing-lg);
+  }
+  
+  /* Mobile-specific card enhancements */
+  .stomp-base-card-compact {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .stomp-base-card-compact h4 {
+    font-size: var(--font-size-md);
+  }
+  
+  /* Force single column on mobile for all grids inside cards */
+  .stomp-base-card div[style*="grid-template-columns"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stomp-base-layout {
+    padding: var(--spacing-sm);
+  }
+  
+  .stomp-base-main-container {
+    padding: var(--spacing-md);
+  }
+  
+  .stomp-base-card,
+  .stomp-base-card-compact {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+  }
+  
+  .stomp-base-dashboard-info-grid,
+  .stomp-base-dashboard-actions-grid {
+    gap: var(--spacing-md);
+  }
+  
+  /* Force single column for stat cards on very small screens */
+  .stomp-base-card div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-md);
+  }
+  
+  /* Adjust card text sizes for mobile */
+  .stomp-base-card-compact h4 {
+    font-size: var(--font-size-base);
+  }
+  
+  .stomp-base-card-compact p {
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+  }
+}

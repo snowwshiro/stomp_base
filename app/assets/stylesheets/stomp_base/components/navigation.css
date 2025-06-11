@@ -1,0 +1,40 @@
+/*
+ * Navigation Component
+ * Sidebar navigation styles and interactions
+ */
+
+.stomp-base-sidebar-nav {
+  padding: var(--spacing-sm) 0;
+}
+
+.stomp-base-sidebar-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--text-sidebar-light);
+  text-decoration: none;
+  transition: var(--transition-fast);
+  border-left: 3px solid transparent;
+  font-size: var(--font-size-base);
+}
+
+.stomp-base-sidebar-link:hover {
+  background-color: var(--border-sidebar-light);
+  color: var(--text-sidebar-hover-light);
+  border-left-color: var(--color-primary);
+}
+
+.stomp-base-sidebar-link.active {
+  background-color: var(--color-primary);
+  color: var(--text-sidebar-active-light);
+  border-left-color: var(--color-primary-dark);
+}
+
+.stomp-base-sidebar-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}

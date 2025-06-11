@@ -1,0 +1,31 @@
+/*
+ * Settings Page Styles
+ * Settings-specific layouts, cards, and form styling
+ */
+
+/* Settings page styles */
+.stomp-base-settings-title {
+  margin-bottom: var(--spacing-2xl);
+  color: #2c3e50;
+}
+
+.stomp-base-settings-card {
+  background: var(--bg-card-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.stomp-base-settings-header {
+  background: #2c3e50;
+  color: white;
+  padding: var(--spacing-lg);
+}
+
+.stomp-base-settings-header h2 {
+  margin: 0;
+}
+
+.stomp-base-settings-body {
+  padding: var(--spacing-2xl);
+}
