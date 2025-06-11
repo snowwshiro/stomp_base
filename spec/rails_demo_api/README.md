@@ -39,6 +39,7 @@ spec/rails_demo_api/
     │   └── stomp_base/
     │       ├── dashboard_spec.rb      # Dashboard API tests
     │       ├── console_spec.rb        # Console API tests
+    │       ├── authentication_spec.rb # Authentication API tests
     │       └── api_integration_spec.rb # API-specific integration tests
 ```
 
@@ -62,7 +63,16 @@ spec/rails_demo_api/
 ```bash
 cd spec/rails_demo_api
 bundle install
-rails db:create db:migrate
+```
+
+### Database Setup
+```bash
+# Initialize the database
+rails db:create
+rails db:migrate
+
+# Add some sample data (optional)
+rails runner "SampleRecord.create!(name: 'Test Record', description: 'A sample record for testing')"
 ```
 
 ### Development Server
@@ -133,10 +143,11 @@ The test suite covers:
 
 - **JSON Response Handling**: Ensuring all endpoints properly return JSON when requested
 - **CORS Support**: Cross-origin request handling
-- **API Authentication**: Both unauthenticated and API key scenarios
+- **API Authentication**: Both unauthenticated, API key, and basic auth scenarios
 - **Error Handling**: Proper JSON error responses
 - **StompBase Integration**: All major StompBase endpoints
 - **Console Functionality**: Ruby code execution via API
+- **Model Integration**: Testing StompBase models endpoint with sample data
 
 ## Differences from Regular Rails Demo
 
