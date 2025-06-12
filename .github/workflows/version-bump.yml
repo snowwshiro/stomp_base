@@ -1,0 +1,114 @@
+name: Version Bump
+
+on:
+  push:
+    branches: [ main ]
+  
+  # Allow manual trigger with version type selection
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  version-bump:
+    # Only run if this is not a version bump commit (to prevent infinite loops)
+    if: "!contains(github.event.head_commit.message, '[version bump]')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.4'
+
+    - name: Configure Git
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+
+    - name: Determine version bump type
+      id: bump-type
+      run: |
+        # Default to patch for automatic bumps
+        BUMP_TYPE="patch"
+        
+        # Check if manually triggered with specific type
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          BUMP_TYPE="${{ github.event.inputs.version_type }}"
+        else
+          # Analyze commit messages for bump type hints
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          if echo "$COMMIT_MSG" | grep -qE '\[major\]|\bmajor\b.*\[version\]|\bbreaking\s+change'; then
+            BUMP_TYPE="major"
+          elif echo "$COMMIT_MSG" | grep -qE '\[minor\]|\bminor\b.*\[version\]|\bfeat\b|\bfeature\b'; then
+            BUMP_TYPE="minor"
+          fi
+        fi
+        
+        echo "type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+        echo "Determined bump type: $BUMP_TYPE"
+
+    - name: Bump version
+      id: version
+      run: |
+        # Make version bump script executable
+        chmod +x ./bin/version_bump
+        
+        # Get current version
+        CURRENT_VERSION=$(ruby -r ./lib/stomp_base/version.rb -e 'puts StompBase::VERSION')
+        echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+        
+        # Bump version
+        ./bin/version_bump ${{ steps.bump-type.outputs.type }}
+        
+        # Get new version
+        NEW_VERSION=$(ruby -r ./lib/stomp_base/version.rb -e 'puts StompBase::VERSION')
+        echo "new=$NEW_VERSION" >> $GITHUB_OUTPUT
+        
+        echo "Version bumped from $CURRENT_VERSION to $NEW_VERSION"
+
+    - name: Commit and tag version bump
+      run: |
+        # Add changed files
+        git add lib/stomp_base/version.rb CHANGELOG.md
+        
+        # Check if there are any changes to commit
+        if git diff --cached --quiet; then
+          echo "No version changes to commit"
+          exit 0
+        fi
+        
+        # Commit changes
+        git commit -m "chore: bump version to ${{ steps.version.outputs.new }} [version bump]"
+        
+        # Create and push tag
+        git tag "v${{ steps.version.outputs.new }}"
+        git push origin main
+        git push origin "v${{ steps.version.outputs.new }}"
+
+    - name: Create Pull Request summary
+      if: success()
+      run: |
+        echo "## Version Bump Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Previous Version:** ${{ steps.version.outputs.current }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **New Version:** ${{ steps.version.outputs.new }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Bump Type:** ${{ steps.bump-type.outputs.type }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Tag Created:** v${{ steps.version.outputs.new }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "The release workflow will now automatically trigger to publish the gem." >> $GITHUB_STEP_SUMMARY
