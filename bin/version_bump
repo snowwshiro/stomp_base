@@ -1,0 +1,165 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Version bump script for stomp_base gem
+# Supports semantic versioning: major, minor, patch
+
+require "optparse"
+require "date"
+
+class VersionBumper
+  VERSION_FILE = File.expand_path("../lib/stomp_base/version.rb", __dir__)
+  CHANGELOG_FILE = File.expand_path("../CHANGELOG.md", __dir__)
+
+  def initialize
+    @bump_type = nil
+    @dry_run = false
+  end
+
+  def run(args) # rubocop:disable Metrics/MethodLength
+    parse_options(args)
+
+    return show_help unless @bump_type
+
+    current_version = read_current_version
+    new_version = bump_version(current_version, @bump_type)
+
+    puts "Current version: #{current_version}"
+    puts "New version: #{new_version}"
+
+    if @dry_run
+      puts "Dry run mode - no files will be modified"
+      return
+    end
+
+    update_version_file(new_version)
+    update_changelog(new_version)
+
+    puts "Version bumped from #{current_version} to #{new_version}"
+    puts "Updated files:"
+    puts "  - #{VERSION_FILE}"
+    puts "  - #{CHANGELOG_FILE}"
+  end
+
+  private
+
+  def parse_options(args) # rubocop:disable Metrics/MethodLength
+    OptionParser.new do |opts|
+      opts.banner = "Usage: #{$PROGRAM_NAME} [options] [major|minor|patch]"
+
+      opts.on("-d", "--dry-run", "Show what would be changed without modifying files") do
+        @dry_run = true
+      end
+
+      opts.on("-h", "--help", "Show this help message") do
+        show_help
+        exit
+      end
+    end.parse!(args)
+
+    @bump_type = args[0]&.to_sym if args[0]
+  end
+
+  def show_help # rubocop:disable Metrics/MethodLength
+    puts <<~HELP
+      Version Bump Script for stomp_base gem
+
+      Usage: #{$PROGRAM_NAME} [options] [major|minor|patch]
+
+      Arguments:
+        major    Bump major version (x.0.0)
+        minor    Bump minor version (0.x.0)
+        patch    Bump patch version (0.0.x)
+
+      Options:
+        -d, --dry-run    Show what would be changed without modifying files
+        -h, --help       Show this help message
+
+      Examples:
+        #{$PROGRAM_NAME} patch              # 0.2.0 -> 0.2.1
+        #{$PROGRAM_NAME} minor              # 0.2.0 -> 0.3.0
+        #{$PROGRAM_NAME} major              # 0.2.0 -> 1.0.0
+        #{$PROGRAM_NAME} --dry-run patch    # Show changes without modifying files
+    HELP
+  end
+
+  def read_current_version
+    version_content = File.read(VERSION_FILE)
+    version_match = version_content.match(/VERSION = ['"](.*?)['"]/)
+
+    abort "Error: Could not find VERSION in #{VERSION_FILE}" unless version_match
+
+    version_match[1]
+  end
+
+  def bump_version(version, type) # rubocop:disable Metrics/MethodLength
+    major, minor, patch = version.split(".").map(&:to_i)
+
+    case type
+    when :major
+      "#{major + 1}.0.0"
+    when :minor
+      "#{major}.#{minor + 1}.0"
+    when :patch
+      "#{major}.#{minor}.#{patch + 1}"
+    else
+      abort "Error: Invalid bump type '#{type}'. Must be major, minor, or patch."
+    end
+  end
+
+  def update_version_file(new_version)
+    content = File.read(VERSION_FILE)
+    updated_content = content.gsub(
+      /VERSION = ['"](.*?)['"]/,
+      %(VERSION = "#{new_version}")
+    )
+
+    File.write(VERSION_FILE, updated_content)
+  end
+
+  def update_changelog(new_version) # rubocop:disable Metrics/MethodLength
+    content = File.read(CHANGELOG_FILE)
+    today = Time.now.utc.strftime("%Y-%m-%d")
+
+    # Check if there's an [Unreleased] section with content
+    unreleased_section = extract_unreleased_section(content)
+
+    if unreleased_section.strip.empty?
+      puts "Warning: No changes found in [Unreleased] section. CHANGELOG not updated."
+      return
+    end
+
+    # Replace [Unreleased] with new version and date
+    updated_content = content.gsub(
+      /## \[Unreleased\]\s*\n(.*?)\n(?=## |\z)/m
+    ) do
+      unreleased_content = ::Regexp.last_match(1)
+      <<~CHANGELOG
+        ## [Unreleased]
+
+        ## [#{new_version}] - #{today}
+        #{unreleased_content}
+
+      CHANGELOG
+    end
+
+    # Add version link at the bottom if it follows Keep a Changelog format
+    if updated_content.include?("[0.2.0]: https://github.com/snowwshiro/stomp_base/releases/tag/")
+      updated_content = updated_content.gsub(
+        %r{(\[0\.2\.0\]: https://github\.com/snowwshiro/stomp_base/releases/tag/v0\.2\.0)},
+        "[#{new_version}]: https://github.com/snowwshiro/stomp_base/releases/tag/v#{new_version}\n\\1"
+      )
+    end
+
+    File.write(CHANGELOG_FILE, updated_content)
+  end
+
+  def extract_unreleased_section(content)
+    match = content.match(/## \[Unreleased\]\s*\n(.*?)\n(?=## |\z)/m)
+    return "" unless match
+
+    match[1]
+  end
+end
+
+VersionBumper.new.run(ARGV) if __FILE__ == $PROGRAM_NAME

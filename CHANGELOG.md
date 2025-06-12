@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Version Automation**: Automated version bumping and release process
+- **GitHub Flow**: Complete GitHub Flow-based development workflow
+- **CONTRIBUTING.md**: Comprehensive contribution guidelines
+
 ### Changed
 - **Test Structure**: Updated test helper file structure for better separation of concerns
   - Moved configuration tests to `spec/unit/configuration_spec.rb`

@@ -516,7 +516,27 @@ Authentication feature implementation is complete. The following extensions are 
 
 ## Contributing
 
-We welcome contributions to Stomp Base! Here's how you can help:
+We welcome contributions! This project uses **GitHub Flow** with automated versioning for seamless development and releases.
+
+### Quick Start
+
+1. **Fork the repository** and create a feature branch
+2. **Make your changes** with tests and documentation updates  
+3. **Update CHANGELOG.md** in the `[Unreleased]` section
+4. **Submit a Pull Request** for review
+
+### Development Process
+
+We use automated version bumping and release management:
+- **Patch version** (default) - Bug fixes, small improvements
+- **Minor version** - New features (use `[minor]` in commit message)
+- **Major version** - Breaking changes (use `[major]` in commit message)
+
+### Documentation
+
+For detailed contribution guidelines, see:
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Complete development guide
+- **[Release Process](docs/release-process.md)** - Versioning and release automation
 
 ### Getting Started
 
