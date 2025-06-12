@@ -1,5 +1,7 @@
 # 🎛️ Stomp Base
 
+[ja README](./README.ja.md)
+
 [![CI](https://github.com/snowwshiro/stomp_base/workflows/CI/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/snowwshiro/stomp_base/workflows/Code%20Quality/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/code-quality.yml)
 [![Coverage](https://github.com/snowwshiro/stomp_base/workflows/Coverage/badge.svg)](https://github.com/snowwshiro/stomp_base/actions/workflows/coverage.yml)
