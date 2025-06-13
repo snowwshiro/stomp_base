@@ -1,0 +1,14 @@
+/*
+ * Card component styles
+ * Card containers with hover effects and interactions
+ */
+
+.stomp-base-card {
+  background-color: var(--content-bg);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: var(--space-1) solid rgba(0, 0, 0, 0.05);
+}

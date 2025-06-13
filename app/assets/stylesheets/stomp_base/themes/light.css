@@ -1,0 +1,14 @@
+/*
+ * Light theme styles
+ * Default theme colors and overrides
+ */
+
+body.stomp-base-theme-light .stomp-base-layout {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-800);
+}
+
+body.stomp-base-theme-light .stomp-base-card {
+  background-color: var(--color-white);
+  color: var(--color-gray-800);
+}
