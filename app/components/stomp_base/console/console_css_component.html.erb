@@ -1,29 +1,18 @@
 <style>
-.stomp-base-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-#console-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  outline: none;
-}
-
+/* Console-specific scrollbar styling for webkit browsers */
 #console-output::-webkit-scrollbar {
-  width: 8px;
+  @apply w-2;
 }
 
 #console-output::-webkit-scrollbar-track {
-  background: #374151;
+  @apply bg-gray-600;
 }
 
 #console-output::-webkit-scrollbar-thumb {
-  background: #6b7280;
-  border-radius: 4px;
+  @apply bg-gray-500 rounded;
 }
 
 #console-output::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  @apply bg-gray-400;
 }
 </style>

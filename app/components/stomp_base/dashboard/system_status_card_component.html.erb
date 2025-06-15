@@ -1,32 +1,32 @@
 <!-- System Status Card -->
-<div class="stomp-base-card-compact" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 1px solid #6366f1;">
-  <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-    <div style="padding: 0.75rem; background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);">
-      <svg style="width: 1.5rem; height: 1.5rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="stomp-base-card-compact bg-gradient-to-br from-indigo-100 to-indigo-200 border-indigo-500">
+  <div class="flex items-center mb-4">
+    <div class="p-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg shadow-indigo-500/20">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
     </div>
-    <div style="margin-left: 0.75rem;">
-      <h4 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0 0 0.25rem 0;"><%= t('stomp_base.dashboard.system_status') %></h4>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <div class="ml-3">
+      <h4 class="text-lg font-semibold text-gray-900 m-0 mb-1"><%= t('stomp_base.dashboard.system_status') %></h4>
+      <div class="flex items-center gap-2">
         <div class="stomp-base-status-indicator status-active"></div>
-        <span style="font-size: 0.75rem; color: #4f46e5; font-weight: 500;"><%= t('stomp_base.dashboard.running_normally') %></span>
+        <span class="text-xs text-indigo-600 font-medium"><%= t('stomp_base.dashboard.running_normally') %></span>
       </div>
     </div>
   </div>
-  <div style="margin-bottom: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-    <div style="text-align: center; padding: 0.75rem; background-color: rgba(255,255,255,0.5); border-radius: 0.5rem;">
-      <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;"><%= t('stomp_base.dashboard.uptime') %></div>
-      <div style="font-size: 0.875rem; font-weight: 600; color: #111827;"><%= performance_info[:uptime_formatted] %></div>
+  <div class="mb-4 grid grid-cols-2 gap-3">
+    <div class="text-center p-3 bg-white/50 rounded-lg">
+      <div class="text-xs text-gray-500 mb-1"><%= t('stomp_base.dashboard.uptime') %></div>
+      <div class="text-sm font-semibold text-gray-900"><%= performance_info[:uptime_formatted] %></div>
     </div>
-    <div style="text-align: center; padding: 0.75rem; background-color: rgba(255,255,255,0.5); border-radius: 0.5rem;">
-      <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;"><%= t('stomp_base.dashboard.memory') %></div>
-      <div style="font-size: 0.875rem; font-weight: 600; color: #111827;"><%= performance_info[:memory] %> MB</div>
+    <div class="text-center p-3 bg-white/50 rounded-lg">
+      <div class="text-xs text-gray-500 mb-1"><%= t('stomp_base.dashboard.memory') %></div>
+      <div class="text-sm font-semibold text-gray-900"><%= performance_info[:memory] %> MB</div>
     </div>
   </div>
-  <div style="text-align: center;">
-    <span class="stomp-base-badge" style="background: linear-gradient(135deg, #10b981, #059669); color: white; display: inline-flex; align-items: center; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);">
-      <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="text-center">
+    <span class="stomp-base-badge bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/20">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
       <%= t('stomp_base.dashboard.all_services_normal') %>

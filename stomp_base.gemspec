@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.0", "< 9.0"
   spec.add_dependency "view_component", "~> 3.0"
+  spec.add_dependency "tailwindcss-rails", "~> 3.0"
 
   spec.metadata["source_code_uri"] = "https://github.com/snowwshiro/stomp_base"
   spec.metadata["changelog_uri"] = "https://github.com/snowwshiro/stomp_base/blob/main/CHANGELOG.md"
