@@ -83,6 +83,10 @@
     @apply inline-flex items-center px-4 py-2 border-0 rounded-md text-sm font-medium no-underline cursor-pointer transition-all duration-200;
   }
   
+  .stomp-base-btn:hover {
+    @apply -translate-y-px shadow-md;
+  }
+  
   .stomp-base-btn-primary {
     @apply bg-blue-500 text-white;
   }
@@ -109,6 +113,10 @@
   
   .stomp-base-console-input::placeholder {
     @apply text-gray-500;
+  }
+  
+  .stomp-base-dashboard-content {
+    @apply w-full p-0 m-0;
   }
   
   .stomp-base-dashboard-grid {
@@ -143,8 +151,62 @@
     @apply bg-emerald-500;
   }
   
+  .stomp-base-status-indicator.status-active::before {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-emerald-500 animate-ping;
+  }
+  
   .stomp-base-system-overview {
     @apply col-span-2;
+  }
+  
+  /* Settings specific styles */
+  .stomp-base-settings-title {
+    @apply mb-8 text-slate-800;
+  }
+  
+  .stomp-base-settings-card {
+    @apply bg-white rounded-lg shadow-sm overflow-hidden;
+  }
+  
+  .stomp-base-settings-header {
+    @apply bg-slate-800 text-white p-4;
+  }
+  
+  .stomp-base-settings-header h2 {
+    @apply m-0;
+  }
+  
+  .stomp-base-settings-body {
+    @apply p-8;
+  }
+  
+  .stomp-base-form-group {
+    @apply mb-8;
+  }
+  
+  .stomp-base-form-label {
+    @apply block mb-2 font-medium;
+  }
+  
+  .stomp-base-form-description {
+    @apply text-gray-500 text-sm mb-4;
+  }
+  
+  .stomp-base-form-select {
+    @apply w-full px-3 py-3 border border-gray-300 rounded;
+  }
+  
+  .stomp-base-form-actions {
+    @apply flex gap-4;
+  }
+  
+  .stomp-base-btn-save {
+    @apply px-8 py-3 bg-blue-500 text-white border-0 rounded cursor-pointer font-medium;
+  }
+  
+  .stomp-base-btn-reset {
+    @apply px-8 py-3 bg-gray-500 text-white no-underline rounded font-medium;
   }
 }
 
@@ -305,55 +367,6 @@
 
 .dark .stomp-base-badge {
   @apply bg-stomp-gray-700 text-gray-300 border-stomp-gray-600;
-}
-
-/* Settings page styles */
-.stomp-base-settings-title {
-  @apply mb-8 text-slate-800;
-}
-
-.stomp-base-settings-card {
-  @apply bg-white rounded-lg shadow-sm overflow-hidden;
-}
-
-.stomp-base-settings-header {
-  @apply bg-slate-800 text-white p-4;
-}
-
-.stomp-base-settings-header h2 {
-  @apply m-0;
-}
-
-.stomp-base-settings-body {
-  @apply p-8;
-}
-
-.stomp-base-form-group {
-  @apply mb-8;
-}
-
-.stomp-base-form-label {
-  @apply block mb-2 font-medium;
-}
-
-.stomp-base-form-description {
-  @apply text-gray-500 text-sm mb-4;
-}
-
-.stomp-base-form-select {
-  @apply w-full px-3 py-3 border border-gray-300 rounded;
-}
-
-.stomp-base-form-actions {
-  @apply flex gap-4;
-}
-
-.stomp-base-btn-save {
-  @apply px-8 py-3 bg-blue-500 text-white border-0 rounded cursor-pointer font-medium;
-}
-
-.stomp-base-btn-reset {
-  @apply px-8 py-3 bg-gray-500 text-white no-underline rounded font-medium;
 }
 
 /* Dark theme overrides for settings */
