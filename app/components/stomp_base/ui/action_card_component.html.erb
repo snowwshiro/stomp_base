@@ -1,23 +1,23 @@
 <!-- Action Card -->
 <div class="stomp-base-card-compact" style="background: linear-gradient(135deg, <%= gradient_colors[:bg_from] %> 0%, <%= gradient_colors[:bg_to] %> 100%); border: 1px solid <%= gradient_colors[:border] %>;">
-  <div style="display: flex; align-items: center; margin-bottom: <%= show_status? ? '0.75rem' : '1rem' %>;">
-    <div style="padding: 0.75rem; background: linear-gradient(135deg, <%= gradient_colors[:icon_from] %>, <%= gradient_colors[:icon_to] %>); border-radius: 0.75rem; box-shadow: 0 4px 6px -1px <%= gradient_colors[:shadow] %>;">
+  <div class="flex items-center <%= show_status? ? 'mb-3' : 'mb-4' %>">
+    <div class="p-3 rounded-xl shadow-lg" style="background: linear-gradient(135deg, <%= gradient_colors[:icon_from] %>, <%= gradient_colors[:icon_to] %>); box-shadow: 0 4px 6px -1px <%= gradient_colors[:shadow] %>;">
       <%= icon.html_safe %>
     </div>
-    <div style="margin-left: 0.75rem;">
-      <h4 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0 0 0.25rem 0;"><%= title %></h4>
+    <div class="ml-3">
+      <h4 class="text-lg font-semibold text-gray-900 m-0 mb-1"><%= title %></h4>
       <% if show_status? %>
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="flex items-center gap-2">
           <div class="stomp-base-status-indicator <%= status_indicator_class %>"></div>
-          <span style="font-size: 0.75rem; color: <%= gradient_colors[:status_color] %>; font-weight: 500;"><%= @status_text %></span>
+          <span class="text-xs font-medium" style="color: <%= gradient_colors[:status_color] %>;"><%= @status_text %></span>
         </div>
       <% end %>
     </div>
   </div>
-  <p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.875rem; line-height: 1.5;"><%= description %></p>
-  <a href="<%= action_url %>" class="stomp-base-btn" style="display: inline-flex; align-items: center; background: linear-gradient(135deg, <%= gradient_colors[:icon_from] %>, <%= gradient_colors[:icon_to] %>); color: white; width: 100%; justify-content: center; box-shadow: 0 2px 4px <%= gradient_colors[:shadow] %>;">
+  <p class="text-gray-500 mb-4 text-sm leading-relaxed"><%= description %></p>
+  <a href="<%= action_url %>" class="stomp-base-btn inline-flex items-center text-white w-full justify-center shadow-lg" style="background: linear-gradient(135deg, <%= gradient_colors[:icon_from] %>, <%= gradient_colors[:icon_to] %>); box-shadow: 0 2px 4px <%= gradient_colors[:shadow] %>;">
     <%= action_text %>
-    <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
   </a>

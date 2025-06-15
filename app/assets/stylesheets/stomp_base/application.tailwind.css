@@ -1,0 +1,378 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .stomp-base-layout {
+    @apply font-sans m-0 p-0 bg-gray-50 min-h-screen;
+  }
+}
+
+@layer components {
+  /* Legacy class mappings for backwards compatibility */
+  .stomp-base-grid-layout {
+    @apply grid grid-cols-[auto_1fr] min-h-screen gap-0;
+  }
+  
+  .stomp-base-sidebar {
+    @apply w-48 bg-stomp-gray-800 border-r border-stomp-gray-700 h-screen overflow-y-auto sticky top-0;
+  }
+  
+  .stomp-base-sidebar-header {
+    @apply p-4 border-b border-stomp-gray-700;
+  }
+  
+  .stomp-base-sidebar-header h1 {
+    @apply text-base font-bold text-gray-50 m-0 text-left;
+  }
+  
+  .stomp-base-sidebar-nav {
+    @apply py-2;
+  }
+  
+  .stomp-base-sidebar-link {
+    @apply flex flex-row items-center text-left px-4 py-3 text-gray-300 no-underline transition-all duration-200 border-l-4 border-transparent text-sm;
+  }
+  
+  .stomp-base-sidebar-link:hover {
+    @apply bg-stomp-gray-700 text-gray-50 border-l-blue-500;
+  }
+  
+  .stomp-base-sidebar-link.active {
+    @apply bg-blue-500 text-white border-l-blue-700;
+  }
+  
+  .stomp-base-sidebar-icon {
+    @apply w-5 h-5 mr-3 flex-shrink-0;
+  }
+  
+  .stomp-base-main-content {
+    @apply flex-1 min-h-screen overflow-x-auto;
+  }
+  
+  .stomp-base-main-container {
+    @apply p-6 max-w-none h-full;
+  }
+  
+  .stomp-base-card {
+    @apply bg-white rounded-xl shadow-sm p-6 mb-6 transition-all duration-300 border border-black/5;
+  }
+  
+  .stomp-base-card:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+  
+  .stomp-base-card-compact {
+    @apply bg-white rounded-lg shadow-sm p-2.5 mb-2 transition-all duration-300 border border-black/5 relative overflow-hidden;
+  }
+  
+  .stomp-base-card-compact:hover {
+    @apply -translate-y-0.5 shadow-lg;
+  }
+  
+  .stomp-base-card-compact::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 via-emerald-500 to-amber-500 opacity-0 transition-opacity duration-300;
+  }
+  
+  .stomp-base-card-compact:hover::before {
+    @apply opacity-100;
+  }
+  
+  .stomp-base-btn {
+    @apply inline-flex items-center px-4 py-2 border-0 rounded-md text-sm font-medium no-underline cursor-pointer transition-all duration-200;
+  }
+  
+  .stomp-base-btn-primary {
+    @apply bg-blue-500 text-white;
+  }
+  
+  .stomp-base-btn-primary:hover {
+    @apply bg-blue-600;
+  }
+  
+  .stomp-base-btn-secondary {
+    @apply bg-gray-500 text-white;
+  }
+  
+  .stomp-base-btn-secondary:hover {
+    @apply bg-gray-600;
+  }
+  
+  .stomp-base-console {
+    @apply bg-slate-900 text-emerald-400 font-mono text-sm p-4 rounded-lg h-96 overflow-y-auto;
+  }
+  
+  .stomp-base-console-input {
+    @apply bg-transparent border-0 outline-0 text-emerald-400 font-mono w-full;
+  }
+  
+  .stomp-base-console-input::placeholder {
+    @apply text-gray-500;
+  }
+  
+  .stomp-base-dashboard-grid {
+    @apply grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-1.5 mb-2;
+  }
+  
+  .stomp-base-dashboard-info-grid {
+    @apply grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-1.5 mb-2;
+  }
+  
+  .stomp-base-dashboard-actions-grid {
+    @apply grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-1.5;
+  }
+  
+  .stomp-base-progress-bar {
+    @apply w-full h-1.5 bg-gray-200 rounded-full overflow-hidden relative;
+  }
+  
+  .stomp-base-progress-fill {
+    @apply h-full rounded-full transition-all duration-700 ease-out relative overflow-hidden;
+  }
+  
+  .stomp-base-badge {
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 relative overflow-hidden;
+  }
+  
+  .stomp-base-status-indicator {
+    @apply inline-flex items-center justify-center w-3 h-3 rounded-full relative;
+  }
+  
+  .stomp-base-status-indicator.status-active {
+    @apply bg-emerald-500;
+  }
+  
+  .stomp-base-system-overview {
+    @apply col-span-2;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+  
+  .animate-progress-shine {
+    animation: progress-shine 1.5s ease-in-out infinite;
+  }
+  
+  /* Responsive utilities */
+  @media (max-width: 1200px) {
+    .stomp-base-sidebar {
+      @apply w-40;
+    }
+    
+    .stomp-base-main-container {
+      @apply p-4;
+    }
+    
+    .stomp-base-dashboard-grid,
+    .stomp-base-dashboard-info-grid,
+    .stomp-base-dashboard-actions-grid {
+      @apply gap-1.5;
+    }
+    
+    .stomp-base-card {
+      @apply p-2 mb-2;
+    }
+    
+    .stomp-base-sidebar-header h1 {
+      @apply text-xs;
+    }
+    
+    .stomp-base-sidebar-link {
+      @apply text-xs py-1 px-0.5;
+    }
+    
+    .stomp-base-sidebar-icon {
+      @apply w-4 h-4;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .stomp-base-sidebar {
+      @apply w-32;
+    }
+    
+    .stomp-base-dashboard-grid {
+      @apply grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-2;
+    }
+    
+    .stomp-base-dashboard-info-grid,
+    .stomp-base-dashboard-actions-grid {
+      @apply grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2;
+    }
+    
+    .stomp-base-system-overview {
+      @apply col-span-1;
+    }
+    
+    .stomp-base-sidebar-header h1 {
+      @apply text-sm;
+    }
+    
+    .stomp-base-sidebar-link {
+      @apply text-xs py-2 px-3;
+    }
+    
+    .stomp-base-sidebar-icon {
+      @apply w-4 h-4 mr-2;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .stomp-base-sidebar {
+      @apply w-full h-auto relative;
+    }
+    
+    .stomp-base-main-container {
+      @apply p-4;
+    }
+    
+    .stomp-base-dashboard-grid,
+    .stomp-base-dashboard-info-grid,
+    .stomp-base-dashboard-actions-grid {
+      @apply grid-cols-1 gap-4;
+    }
+    
+    .stomp-base-system-overview {
+      @apply col-span-1;
+    }
+    
+    .stomp-base-card,
+    .stomp-base-card-compact {
+      @apply p-4;
+    }
+    
+    .stomp-base-card-compact {
+      @apply mb-3;
+    }
+    
+    .stomp-base-sidebar-link {
+      @apply justify-start py-2 px-4 text-sm;
+    }
+    
+    .stomp-base-sidebar-icon {
+      @apply w-4 h-4 mr-3;
+    }
+  }
+}
+
+/* Dark theme support */
+.dark .stomp-base-layout {
+  @apply bg-stomp-gray-900 text-gray-50;
+}
+
+.dark .stomp-base-main-content {
+  @apply bg-stomp-gray-900;
+}
+
+.dark .stomp-base-card,
+.dark .stomp-base-card-compact {
+  @apply bg-stomp-gray-800 text-gray-50 border-stomp-gray-700;
+}
+
+.dark .stomp-base-card:hover,
+.dark .stomp-base-card-compact:hover {
+  @apply bg-stomp-gray-700 border-stomp-gray-600;
+}
+
+.dark .stomp-base-sidebar {
+  @apply bg-stomp-gray-950 border-stomp-gray-800;
+}
+
+.dark .stomp-base-sidebar-header {
+  @apply border-stomp-gray-800;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  @apply text-gray-50;
+}
+
+.dark input, .dark select, .dark textarea {
+  @apply bg-stomp-gray-800 text-gray-50 border-stomp-gray-700;
+}
+
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+  @apply border-blue-500;
+}
+
+.dark .stomp-base-progress-bar {
+  @apply bg-stomp-gray-700;
+}
+
+.dark .stomp-base-badge {
+  @apply bg-stomp-gray-700 text-gray-300 border-stomp-gray-600;
+}
+
+/* Settings page styles */
+.stomp-base-settings-title {
+  @apply mb-8 text-slate-800;
+}
+
+.stomp-base-settings-card {
+  @apply bg-white rounded-lg shadow-sm overflow-hidden;
+}
+
+.stomp-base-settings-header {
+  @apply bg-slate-800 text-white p-4;
+}
+
+.stomp-base-settings-header h2 {
+  @apply m-0;
+}
+
+.stomp-base-settings-body {
+  @apply p-8;
+}
+
+.stomp-base-form-group {
+  @apply mb-8;
+}
+
+.stomp-base-form-label {
+  @apply block mb-2 font-medium;
+}
+
+.stomp-base-form-description {
+  @apply text-gray-500 text-sm mb-4;
+}
+
+.stomp-base-form-select {
+  @apply w-full px-3 py-3 border border-gray-300 rounded;
+}
+
+.stomp-base-form-actions {
+  @apply flex gap-4;
+}
+
+.stomp-base-btn-save {
+  @apply px-8 py-3 bg-blue-500 text-white border-0 rounded cursor-pointer font-medium;
+}
+
+.stomp-base-btn-reset {
+  @apply px-8 py-3 bg-gray-500 text-white no-underline rounded font-medium;
+}
+
+/* Dark theme overrides for settings */
+.dark .stomp-base-settings-title {
+  @apply text-gray-50;
+}
+
+.dark .stomp-base-settings-card {
+  @apply bg-stomp-gray-800 border border-stomp-gray-700;
+}
+
+.dark .stomp-base-settings-header {
+  @apply bg-stomp-gray-950 border-b border-stomp-gray-700;
+}
+
+.dark .stomp-base-form-description {
+  @apply text-gray-400;
+}
+
+.dark .stomp-base-form-select {
+  @apply bg-stomp-gray-800 border-stomp-gray-700 text-gray-50;
+}

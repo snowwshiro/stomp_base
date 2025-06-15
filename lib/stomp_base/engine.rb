@@ -3,6 +3,7 @@
 require "rails/engine"
 require "active_record"
 require "view_component"
+require "tailwindcss/rails"
 
 module StompBase
   class Engine < ::Rails::Engine
@@ -22,7 +23,17 @@ module StompBase
       config.assets.paths << root.join("app", "javascript")
 
       # CSS precompilation (JavaScript is managed by importmap)
-      config.assets.precompile += %w[stomp_base/application.css stomp_base/base.css]
+      config.assets.precompile += %w[stomp_base/application.css stomp_base/application.tailwind.css stomp_base/base.css]
+    end
+
+    # Tailwind CSS configuration
+    initializer "stomp_base.tailwind" do |app|
+      if defined?(Tailwindcss::Rails)
+        # Add our Tailwind config file to the search path
+        Tailwindcss::Rails.configure do |config|
+          config.config_file = Engine.root.join("config", "tailwind.config.js")
+        end
+      end
     end
 
     # I18n configuration
