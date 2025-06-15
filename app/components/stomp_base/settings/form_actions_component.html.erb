@@ -1,13 +1,11 @@
 <!-- Form Actions -->
-<div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(147, 51, 234, 0.2);">
+<div class="flex gap-3 mt-6 pt-4 border-t border-purple-200">
   <%= form.submit t('stomp_base.settings.save'), 
-      class: "stomp-base-btn", 
-      style: "background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);" %>
+      class: "stomp-base-btn bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0 py-2.5 px-5 rounded-md text-sm font-medium cursor-pointer transition-all duration-200 shadow-lg shadow-emerald-500/20" %>
   
   <%= link_to t('stomp_base.settings.reset'), 
       form_url,
       method: :delete,
       confirm: t('stomp_base.settings.reset_confirmation'),
-      class: "stomp-base-btn",
-      style: "background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; text-decoration: none; border: none; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2); display: inline-block;" %>
+      class: "stomp-base-btn bg-gradient-to-br from-red-500 to-red-600 text-white no-underline border-0 py-2.5 px-5 rounded-md text-sm font-medium cursor-pointer transition-all duration-200 shadow-lg shadow-red-500/20 inline-block" %>
 </div>

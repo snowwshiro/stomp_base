@@ -1,20 +1,19 @@
-<div class="stomp-base-card" style="background-color: rgba(255,255,255,0.7); border: 1px solid rgba(147, 51, 234, 0.2); padding: 1rem;">
-  <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-    <svg style="width: 1.25rem; height: 1.25rem; color: #9333ea; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="stomp-base-card bg-white/70 border border-purple-200 p-4">
+  <div class="flex items-center mb-2">
+    <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>"></path>
     </svg>
-    <label class="stomp-base-form-label" style="font-size: 0.9375rem; font-weight: 600; color: #7c3aed; margin: 0;">
+    <label class="stomp-base-form-label text-sm font-semibold text-purple-700 m-0">
       <%= label %>
     </label>
   </div>
-  <p class="stomp-base-form-description" style="font-size: 0.8125rem; color: #6b7280; margin: 0 0 0.75rem 0;">
+  <p class="stomp-base-form-description text-xs text-gray-500 m-0 mb-3">
     <%= description %>
   </p>
   <%= form.select field_name, 
       options_for_select(options, current_value), 
       {}, 
       { 
-        class: "stomp-base-form-select",
-        style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; focus:ring-2 focus:ring-purple-500 focus:border-purple-500;"
+        class: "stomp-base-form-select w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
       } %>
 </div>

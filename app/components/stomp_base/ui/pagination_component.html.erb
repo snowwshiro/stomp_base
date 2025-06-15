@@ -1,13 +1,12 @@
 <%# Pagination %>
 <% if pagination? %>
-  <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-top: 1px solid #e5e7eb;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div style="display: flex; gap: 0.5rem;">
+  <div class="px-6 py-4 bg-gradient-to-br from-slate-50 to-slate-200 border-t border-gray-200">
+    <div class="flex justify-between items-center">
+      <div class="flex gap-2">
         <% if previous_page? %>
           <%= link_to helpers.stomp_base.model_path(model_name, offset: previous_page_offset, limit: per_page), 
-              class: "stomp-base-btn stomp-base-btn-secondary", 
-              style: "display: inline-flex; align-items: center; font-size: 0.875rem;" do %>
-            <svg style="width: 1rem; height: 1rem; margin-right: 0.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              class: "stomp-base-btn stomp-base-btn-secondary inline-flex items-center text-sm" do %>
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
             <%= t('stomp_base.models.pagination.prev') %>
@@ -16,17 +15,16 @@
         
         <% if next_page? %>
           <%= link_to helpers.stomp_base.model_path(model_name, offset: next_page_offset, limit: per_page), 
-              class: "stomp-base-btn stomp-base-btn-primary", 
-              style: "display: inline-flex; align-items: center; font-size: 0.875rem;" do %>
+              class: "stomp-base-btn stomp-base-btn-primary inline-flex items-center text-sm" do %>
             <%= t('stomp_base.models.pagination.next') %>
-            <svg style="width: 1rem; height: 1rem; margin-left: 0.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           <% end %>
         <% end %>
       </div>
       
-      <div style="color: #6b7280; font-size: 0.875rem;">
+      <div class="text-gray-500 text-sm">
         <%= t('stomp_base.models.pagination.total') %> <%= total_count %> <%= t('stomp_base.models.pagination.items') %>
       </div>
     </div>
