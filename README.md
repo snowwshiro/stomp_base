@@ -61,6 +61,30 @@ end
 2. **Install View Component** (automatically included as dependency):
 The gem includes View Component as a dependency, so no additional setup is required.
 
+### API-Only Rails Applications
+
+StompBase automatically works with API-only Rails applications! The engine detects when the asset pipeline is not available and configures static asset serving automatically.
+
+**No additional configuration needed** - StompBase will:
+- Detect API-only mode (`config.api_only = true`)
+- Automatically serve CSS assets via `ActionDispatch::Static` middleware
+- Display helpful warnings if public file server is disabled
+
+If you encounter styling issues in an API-only app, ensure public file server is enabled:
+
+```ruby
+# config/application.rb or config/environments/development.rb
+config.public_file_server.enabled = true
+```
+
+Alternatively, you can enable ActionView and the asset pipeline:
+
+```ruby
+# config/application.rb
+require "action_view/railtie"
+# Remove or comment out: config.api_only = true
+```
+
 ## Usage
 
 ### Accessing the Dashboard

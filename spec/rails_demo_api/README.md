@@ -169,3 +169,13 @@ This demo validates that StompBase works correctly in Rails API-only mode by:
 - Validating authentication works in API contexts
 - Ensuring CORS headers are properly set
 - Testing console functionality via JSON requests
+- **Automatic CSS serving**: StompBase engine automatically detects API-only mode and serves CSS assets via static middleware
+
+### CSS Asset Serving
+
+When accessing StompBase UI in API-only mode (e.g., `/stomp_base` in browser), the engine automatically:
+1. Detects that asset pipeline is unavailable (`config.api_only = true`)
+2. Configures `ActionDispatch::Static` middleware to serve CSS from engine assets
+3. Serves CSS files directly (e.g., `/stylesheets/stomp_base/application.css`)
+
+This ensures the StompBase interface is fully styled and functional even in API-only Rails applications.
