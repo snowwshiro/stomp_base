@@ -1,6 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "StompBase Dashboard API", type: :request do
+require "rails_helper"
+
+RSpec.describe "StompBase Dashboard API" do
   describe "GET /stomp_base" do
     it "returns the dashboard page" do
       get "/stomp_base"

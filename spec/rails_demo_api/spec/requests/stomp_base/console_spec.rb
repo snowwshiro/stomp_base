@@ -1,6 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "StompBase Console API", type: :request do
+require "rails_helper"
+
+RSpec.describe "StompBase Console API" do
   describe "GET /stomp_base/console" do
     it "returns the console page" do
       get "/stomp_base/console"
@@ -20,25 +22,25 @@ RSpec.describe "StompBase Console API", type: :request do
     end
 
     it "returns JSON response when JSON is requested" do
-      post "/stomp_base/console/execute", 
+      post "/stomp_base/console/execute",
            params: { code: "1 + 1" }.to_json,
-           headers: { 
+           headers: {
              "Content-Type" => "application/json",
-             "Accept" => "application/json" 
+             "Accept" => "application/json"
            }
       expect(response).to have_http_status(:success)
       expect(response.content_type).to include("application/json")
     end
 
     it "handles basic Ruby expressions" do
-      post "/stomp_base/console/execute", 
+      post "/stomp_base/console/execute",
            params: { code: "2 * 3" }.to_json,
-           headers: { 
+           headers: {
              "Content-Type" => "application/json",
-             "Accept" => "application/json" 
+             "Accept" => "application/json"
            }
       expect(response).to have_http_status(:success)
-      
+
       json_response = JSON.parse(response.body)
       expect(json_response).to have_key("result")
     end

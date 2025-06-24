@@ -1,6 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "API Root", type: :request do
+require "rails_helper"
+
+RSpec.describe "API Root" do
   describe "GET /" do
     it "returns API information" do
       get "/"
@@ -11,12 +13,12 @@ RSpec.describe "API Root", type: :request do
     it "includes expected API information fields" do
       get "/"
       json_response = JSON.parse(response.body)
-      
+
       expect(json_response).to have_key("message")
       expect(json_response).to have_key("version")
       expect(json_response).to have_key("stomp_base_mounted")
       expect(json_response).to have_key("timestamp")
-      
+
       expect(json_response["stomp_base_mounted"]).to eq("/stomp_base")
     end
   end

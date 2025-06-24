@@ -1,6 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "StompBase API Integration", type: :request do
+require "rails_helper"
+
+RSpec.describe "StompBase API Integration" do
   describe "API-specific functionality" do
     describe "JSON responses" do
       it "handles JSON Accept headers properly" do
@@ -9,11 +11,11 @@ RSpec.describe "StompBase API Integration", type: :request do
       end
 
       it "handles Content-Type application/json" do
-        post "/stomp_base/console/execute", 
+        post "/stomp_base/console/execute",
              params: { code: "Time.current" }.to_json,
-             headers: { 
+             headers: {
                "Content-Type" => "application/json",
-               "Accept" => "application/json" 
+               "Accept" => "application/json"
              }
         expect(response).to have_http_status(:success)
         expect(response.content_type).to include("application/json")
@@ -44,11 +46,11 @@ RSpec.describe "StompBase API Integration", type: :request do
       end
 
       it "handles locale updates via PATCH" do
-        patch "/stomp_base/settings/locale", 
+        patch "/stomp_base/settings/locale",
               params: { locale: "en" }.to_json,
-              headers: { 
+              headers: {
                 "Content-Type" => "application/json",
-                "Accept" => "application/json" 
+                "Accept" => "application/json"
               }
         expect(response).to have_http_status(:success)
       end
@@ -81,11 +83,6 @@ RSpec.describe "StompBase API Integration", type: :request do
       end
 
       context "when API key authentication is enabled" do
-        before do
-          # This test demonstrates how API key auth would work
-          # Implementation would need StompBase.configure in setup
-        end
-
         it "demonstrates API key header usage" do
           # This is a placeholder test showing expected API key behavior
           headers = { "X-API-Key" => "demo-api-key", "Accept" => "application/json" }
@@ -105,14 +102,14 @@ RSpec.describe "StompBase API Integration", type: :request do
     end
 
     it "handles malformed JSON in POST requests" do
-      post "/stomp_base/console/execute", 
+      post "/stomp_base/console/execute",
            params: "invalid json",
-           headers: { 
+           headers: {
              "Content-Type" => "application/json",
-             "Accept" => "application/json" 
+             "Accept" => "application/json"
            }
       # Should handle malformed JSON gracefully
-      expect([400, 422, 500]).to include(response.status)
+      expect(response.status).to be_in([400, 422, 500])
     end
   end
 end
