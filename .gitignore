@@ -87,6 +87,20 @@ Thumbs.db
 /spec/rails_demo/.sass-cache/
 /spec/rails_demo/vendor/bundle/
 
+# Rails demo app specific ignores
+/spec/rails_demo_api/log/*.log
+/spec/rails_demo_api/tmp/
+/spec/rails_demo_api/storage/
+/spec/rails_demo_api/public/assets/
+/spec/rails_demo_api/public/packs/
+/spec/rails_demo_api/public/packs-test/
+/spec/rails_demo_api/node_modules/
+/spec/rails_demo_api/yarn-error.log
+/spec/rails_demo_api/coverage/
+/spec/rails_demo_api/.byebug_history
+/spec/rails_demo_api/.sass-cache/
+/spec/rails_demo_api/vendor/bundle/
+
 # CI/CD artifacts
 /brakeman-results.json
 /reek-results.json
