@@ -7,17 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-06-28
+
+### Added
+- **API-only Rails Support**: Automatic compatibility for API-only Rails applications
+  - Auto-configure necessary middleware (session, cookies, flash, method override)
+  - Automatic session store configuration for API-only applications
+  - No manual middleware configuration required in host applications
+- **Japanese Documentation**: Complete Japanese translation of README.md (README.ja.md)
+- **Rails Demo API**: Complete API-only Rails demonstration application
+  - Sample models, migrations, and authentication specifications
+  - Proper bin/ directory with Rails binstubs
+  - Complete environment configurations
+
 ### Changed
-- **Test Structure**: Updated test helper file structure for better separation of concerns
-  - Moved configuration tests to `spec/unit/configuration_spec.rb`
-  - Updated `spec_helper.rb` for pure Ruby logic tests only
-  - Deprecated main `spec/rails_helper.rb` with automatic redirection to appropriate helpers
-  - Rails-based tests now use `spec/rails_demo/spec/rails_helper.rb`
-- **Configuration**: Fixed duplicate `disable_authentication` method in Configuration class
+- **Settings Controller**: Improved settings save functionality with proper flash message handling
+- **Application Controller**: Simplified to use Rails standard flash functionality
+- **Routes**: Added POST route support for settings form submission
+- **Documentation**: Added cross-language links between README files
 
 ### Fixed
-- Removed duplicate method definitions in `StompBase::Configuration`
-- Updated test helper references for consistency
+- **RuboCop Issues**: Fixed RuboCop execution and code style issues
+- **CSS Assets**: Resolved CSS asset loading issues in API-only Rails applications
+- **Error Handling**: Improved error handling and logging for middleware setup
 
 ## [0.2.0] - 2025-05-28
 
@@ -71,5 +83,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🔧 Easy Integration: Simple gem installation and mounting process
 - 🔐 Built-in Authentication: Simple authentication options (Basic Auth, API keys, Custom)
 
+[0.2.1]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.2.1
 [0.2.0]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.2.0
 [0.1.0]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.1.0
