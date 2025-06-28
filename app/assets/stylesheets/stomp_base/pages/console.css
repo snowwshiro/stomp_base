@@ -1,0 +1,28 @@
+/*
+ * Console page styles
+ * Terminal-style console interface
+ */
+
+.stomp-base-console {
+  background-color: var(--color-gray-950);
+  color: var(--color-green-500);
+  font-family: var(--font-family-mono);
+  font-size: 0.875rem;
+  padding: var(--space-1rem);
+  border-radius: 0.5rem;
+  height: var(--space-24rem);
+  overflow-y: auto;
+}
+
+.stomp-base-console-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-green-500);
+  font-family: inherit;
+  width: 100%;
+}
+
+.stomp-base-console-input::placeholder {
+  color: var(--color-gray-400);
+}

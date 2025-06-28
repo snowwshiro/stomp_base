@@ -1,0 +1,67 @@
+/*
+ * Layout styles for Stomp Base
+ * Core layout components and grid systems
+ */
+
+/* Base layout styles */
+.stomp-base-layout {
+  font-family: var(--font-family-system);
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg);
+  min-height: 100vh;
+}
+
+/* Grid Layout Container */
+.stomp-base-grid-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+  gap: 0;
+}
+
+/* Left Sidebar */
+.stomp-base-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  border-right: var(--space-1) solid var(--sidebar-border);
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+.stomp-base-sidebar-header {
+  padding: var(--space-1rem);
+  border-bottom: var(--space-1) solid var(--sidebar-border);
+}
+
+.stomp-base-sidebar-header h1 {
+  font-size: var(--space-1rem);
+  font-weight: 700;
+  color: var(--color-gray-50);
+  margin: 0;
+  text-align: left;
+}
+
+.stomp-base-sidebar-nav {
+  padding: 0.5rem 0;
+}
+
+/* Main Content Area */
+.stomp-base-sidebar-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.stomp-base-main-content {
+  flex: 1;
+  min-height: 100vh;
+  overflow-x: auto;
+}
+
+.stomp-base-main-container {
+  padding: 1.5rem;
+  max-width: none;
+  height: 100%;
+}
