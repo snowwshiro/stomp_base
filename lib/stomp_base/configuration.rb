@@ -6,6 +6,7 @@ module StompBase
                   :authentication_enabled, :authentication_method,
                   :basic_auth_username, :basic_auth_password,
                   :valid_api_keys, :custom_authenticator,
+                  :allowed_ips,
                   :allow_console_in_production
 
     attr_reader :locale
@@ -19,6 +20,7 @@ module StompBase
       @basic_auth_password = nil
       @valid_api_keys = []
       @custom_authenticator = nil
+      @allowed_ips = []
       @allow_console_in_production = false # Whether to allow console functionality in production environment
     end
 
@@ -55,6 +57,8 @@ module StompBase
         configure_api_key(options)
       when :custom
         configure_custom_auth(options)
+      when :ip_auth
+        configure_ip_auth(options)
       else
         raise ArgumentError, "Unsupported authentication method: #{method}"
       end
@@ -76,6 +80,11 @@ module StompBase
       validate_custom_auth_config
     end
 
+    def configure_ip_auth(options)
+      @allowed_ips = Array(options[:allowed_ips])
+      validate_ip_auth_config
+    end
+
     def validate_basic_auth_config
       return unless @basic_auth_username.nil? || @basic_auth_password.nil?
 
@@ -92,6 +101,12 @@ module StompBase
       return if @custom_authenticator.respond_to?(:call)
 
       raise ArgumentError, "Custom authenticator must be a callable object"
+    end
+
+    def validate_ip_auth_config
+      return unless @allowed_ips.empty?
+
+      raise ArgumentError, "IP authentication requires at least one allowed IP address or range"
     end
   end
 end
