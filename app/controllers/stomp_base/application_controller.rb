@@ -2,6 +2,10 @@
 
 module StompBase
   class ApplicationController < ActionController::Base
+    # Include necessary modules for API-only compatibility
+    include ActionController::Cookies
+    include ActionController::Flash unless included_modules.include?(ActionController::Flash)
+
     include StompBase::I18nHelper
     include StompBase::Authentication
 

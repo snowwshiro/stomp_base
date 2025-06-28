@@ -14,7 +14,7 @@ module StompBase
 
       update_theme_setting(params[:theme]) if params[:theme]
 
-      redirect_back(fallback_location: stomp_base.root_path, notice: t("stomp_base.settings.settings_updated"))
+      safe_redirect_with_notice(t("stomp_base.settings.settings_updated"))
     end
 
     def update_locale
@@ -43,7 +43,7 @@ module StompBase
       respond_to do |format|
         format.json { render json: { status: "success", locale: locale } }
         format.html do
-          redirect_back(fallback_location: stomp_base.root_path, notice: t("stomp_base.settings.settings_updated"))
+          safe_redirect_with_notice(t("stomp_base.settings.settings_updated"))
         end
       end
     end
@@ -55,7 +55,7 @@ module StompBase
                  status: :unprocessable_entity
         end
         format.html do
-          redirect_back(fallback_location: stomp_base.root_path, alert: t("stomp_base.settings.invalid_locale"))
+          safe_redirect_with_alert(t("stomp_base.settings.invalid_locale"))
         end
       end
     end
@@ -74,6 +74,16 @@ module StompBase
       return unless valid_themes.include?(theme)
 
       session[:stomp_base_theme] = theme
+    end
+
+    def safe_redirect_with_notice(message)
+      flash[:notice] = message
+      redirect_back(fallback_location: stomp_base.root_path)
+    end
+
+    def safe_redirect_with_alert(message)
+      flash[:alert] = message
+      redirect_back(fallback_location: stomp_base.root_path)
     end
   end
 end
