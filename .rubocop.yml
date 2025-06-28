@@ -6,7 +6,9 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'spec/rails_demo/**/*'
+    - 'spec/rails_demo_api/**/*'
     - 'vendor/**/*'
+    - '**/vendor/**/*'
     - 'tmp/**/*'
     - 'log/**/*'
     - 'bin/**/*'
@@ -20,6 +22,7 @@ plugins:
   - rubocop-rails
   - rubocop-capybara
   - rubocop-factory_bot
+  - rubocop-rake
 
 # Metrics
 Metrics/BlockLength:
