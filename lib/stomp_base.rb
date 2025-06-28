@@ -3,6 +3,7 @@
 require "stomp_base/version"
 require "stomp_base/configuration"
 require "stomp_base/i18n_helper"
+require "stomp_base/ip_authentication_service"
 
 # Only load Rails-dependent modules if Rails is available
 if defined?(Rails)

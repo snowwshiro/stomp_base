@@ -18,6 +18,8 @@ module StompBase
         authenticate_with_api_key
       when :custom
         authenticate_with_custom_method
+      when :ip_auth
+        authenticate_with_ip_auth
       else
         render_authentication_error("Unknown authentication method")
       end
@@ -46,10 +48,29 @@ module StompBase
       render_authentication_error("Custom authentication failed")
     end
 
+    def authenticate_with_ip_auth
+      client_ip = StompBase::IPAuthenticationService.extract_client_ip(request)
+      allowed_ips = StompBase.configuration.allowed_ips
+
+      return if StompBase::IPAuthenticationService.validate_ip(client_ip, allowed_ips)
+
+      render_ip_authentication_error(client_ip)
+    end
+
     def render_authentication_error(message = "Authentication required")
       respond_to do |format|
         format.html { render plain: message, status: :unauthorized }
         format.json { render json: { error: message }, status: :unauthorized }
+        format.any { render plain: message, status: :unauthorized }
+      end
+    end
+
+    def render_ip_authentication_error(client_ip)
+      message = "Access restricted. Your IP address (#{client_ip}) is not authorized to access this application."
+      
+      respond_to do |format|
+        format.html { render plain: message, status: :unauthorized }
+        format.json { render json: { error: message, client_ip: client_ip }, status: :unauthorized }
         format.any { render plain: message, status: :unauthorized }
       end
     end

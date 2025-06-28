@@ -93,6 +93,37 @@ RSpec.describe StompBase::Configuration do
         expect(config.custom_authenticator).to eq(authenticator)
       end
     end
+
+    context "with IP auth" do
+      it "enables IP authentication" do
+        config.enable_authentication(
+          method: :ip_auth,
+          allowed_ips: %w[192.168.1.0/24 10.0.0.100]
+        )
+
+        expect(config.authentication_enabled?).to be true
+        expect(config.authentication_method).to eq(:ip_auth)
+        expect(config.allowed_ips).to eq(%w[192.168.1.0/24 10.0.0.100])
+      end
+
+      it "accepts single IP address" do
+        config.enable_authentication(
+          method: :ip_auth,
+          allowed_ips: "192.168.1.100"
+        )
+
+        expect(config.allowed_ips).to eq(["192.168.1.100"])
+      end
+
+      it "raises error when no IPs are provided" do
+        expect do
+          config.enable_authentication(
+            method: :ip_auth,
+            allowed_ips: []
+          )
+        end.to raise_error(ArgumentError, "IP authentication requires at least one allowed IP address or range")
+      end
+    end
   end
 
   describe "#disable_authentication" do
