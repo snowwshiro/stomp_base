@@ -77,12 +77,12 @@ ja:
 
     console:
       title: "Rails コンソール"
-      description: "Rails環境でRubyコードを直接実行できます。"
+      description: "Rails環境でRubyコードを直接実行できます。変数の代入と永続化をサポートします。"
       dashboard_description: "Rails環境でRubyコードを直接実行"
       available: "利用可能"
       open_console: "コンソールを開く"
       welcome_message: "Rails Console"
-      placeholder: "Rubyコードを入力してください（例: User.count）"
+      placeholder: "Rubyコードを入力してください（例: x = 42, User.count, vars）"
       execute: "実行"
       clear: "クリア"
       clear_history: "履歴をクリア"
@@ -103,6 +103,10 @@ ja:
         current_time: "Time.current"
         rails_env: "Rails.env"
         database_info: "ActiveRecord::Base.connection.adapter_name"
+        variable_assignment: "変数の代入"
+        variable_usage: "変数の使用"
+        string_assignment: "文字列の代入"
+        list_variables: "変数一覧"
 
     settings:
       title: "設定"

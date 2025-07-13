@@ -7,7 +7,11 @@ module StompBase
         { key: "user_count", command: "User.count" },
         { key: "current_time", command: "Time.current" },
         { key: "rails_env", command: "Rails.env" },
-        { key: "database_info", command: "ActiveRecord::Base.connection.adapter_name" }
+        { key: "database_info", command: "ActiveRecord::Base.connection.adapter_name" },
+        { key: "variable_assignment", command: "x = 42" },
+        { key: "variable_usage", command: "x * 2" },
+        { key: "string_assignment", command: "name = 'John'" },
+        { key: "list_variables", command: "vars" }
       ].freeze
 
       def console_examples

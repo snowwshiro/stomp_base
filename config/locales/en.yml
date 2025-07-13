@@ -77,12 +77,12 @@ en:
 
     console:
       title: "Rails Console"
-      description: "Execute Ruby code directly in your Rails environment."
+      description: "Execute Ruby code directly in your Rails environment. Supports variable assignment and persistence."
       dashboard_description: "Execute Ruby code directly in Rails environment"
       available: "Available"
       open_console: "Open Console"
       welcome_message: "Rails Console"
-      placeholder: "Enter Ruby code (e.g., User.count)"
+      placeholder: "Enter Ruby code (e.g., x = 42, User.count, vars)"
       execute: "Execute"
       clear: "Clear"
       clear_history: "Clear History"
@@ -103,6 +103,10 @@ en:
         current_time: "Time.current"
         rails_env: "Rails.env"
         database_info: "ActiveRecord::Base.connection.adapter_name"
+        variable_assignment: "Assign Variable"
+        variable_usage: "Use Variable"
+        string_assignment: "String Assignment"
+        list_variables: "List Variables"
 
     settings:
       title: "Settings"
