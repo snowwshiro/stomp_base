@@ -31,11 +31,13 @@ module StompBase
       /Rails\.application\.secrets/i, # Secret access
       /ENV\[.*SECRET/i # Environment secret access
     ].freeze
+    
     # Disable Rails default layout to use LayoutComponent
     layout false
 
     # Disabled in production environment for security reasons
     before_action :ensure_not_production, only: %i[index execute]
+    before_action :initialize_console_session, only: %i[execute]
 
     def index
       @console_component = StompBase::Pages::ConsoleComponent.new
@@ -53,6 +55,11 @@ module StompBase
     def process_console_command(command)
       Rails.logger.info "StompBase Console Command: #{command}"
       return render_dangerous_command_error if dangerous_command?(command)
+
+      # Handle special commands
+      if command.strip == 'vars'
+        return render_vars_command
+      end
 
       result = execute_in_rails_console(command)
       render_success(result)
@@ -92,9 +99,9 @@ module StompBase
 
     def execute_in_rails_console(command)
       # Evaluate command in secure execution environment
-      # Simulate basic Rails console environment
-      binding_context = create_console_binding
-
+      # with variable persistence
+      binding_context = console_session_binding
+      
       # Set timeout (10 seconds)
       result = Timeout.timeout(10) do
         binding_context.eval(command)
@@ -104,13 +111,91 @@ module StompBase
       format_result(result)
     end
 
-    def create_console_binding
-      binding_object = ConsoleBindingHelper.new
-      binding_object.instance_eval { binding }
+    def console_session_binding
+      # Create or retrieve the persistent binding for this session
+      unless session[:console_binding]
+        helper = ConsoleBindingHelper.new
+        session[:console_binding] = helper.create_persistent_binding
+      end
+      session[:console_binding]
     end
 
-    # Helper class for console binding
+    def initialize_console_session
+      # Initialize console session if not exists
+      unless session[:console_binding]
+        helper = ConsoleBindingHelper.new
+        session[:console_binding] = helper.create_persistent_binding
+      end
+    end
+
+    def render_vars_command
+      binding_context = console_session_binding
+      variables = extract_variables_from_binding(binding_context)
+      vars_output = format_variables(variables)
+      render_success(vars_output)
+    end
+
+    def extract_variables_from_binding(binding_context)
+      vars = {}
+      
+      # Get local variables from the binding
+      begin
+        binding_context.local_variables.each do |var|
+          var_name = var.to_s
+          # Skip internal variables and method-like variables
+          next if var_name.start_with?('_') || 
+                  ['persistent_binding', 'result1', 'result2', 'result3', 'variables', 'result7'].include?(var_name)
+          
+          vars[var_name] = binding_context.local_variable_get(var)
+        end
+      rescue => e
+        Rails.logger.debug "Error extracting variables: #{e.message}"
+      end
+      
+      vars
+    end
+
+    def format_variables(variables)
+      return "No variables defined." if variables.empty?
+      
+      output = "Variables:\n"
+      variables.each do |name, value|
+        formatted_value = format_result(value)
+        output += "  #{name}: #{formatted_value}\n"
+      end
+      output.chomp
+    end
+
+    # Helper class for console binding with variable persistence
     class ConsoleBindingHelper
+      def initialize
+        @persistent_binding = nil
+      end
+      
+      def create_persistent_binding
+        return @persistent_binding if @persistent_binding
+        
+        # Create a new binding context with Rails helpers
+        @persistent_binding = binding
+        
+        # Add Rails helpers to the binding context
+        @persistent_binding.eval("
+          def app
+            Rails.application
+          end
+
+          def helper
+            ApplicationController.helpers
+          end
+
+          def reload!
+            Rails.application.reloader.reload!
+          end
+        ")
+        
+        @persistent_binding
+      end
+      
       def app
         Rails.application
       end
