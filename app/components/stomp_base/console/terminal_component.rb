@@ -17,8 +17,7 @@ module StompBase
       end
 
       def welcome_message
-        "Welcome to StompBase Rails Console\n" \
-        "Type 'help' for available commands or 'exit' to quit\n\n"
+        t("stomp_base.console.terminal_welcome")
       end
     end
   end
