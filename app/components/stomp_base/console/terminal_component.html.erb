@@ -129,11 +129,51 @@ function adjustTerminalInputHeight() {
   input.style.height = input.scrollHeight + 'px';
 }
 
+function showSessionPersistenceNotice() {
+  const notice = document.createElement('div');
+  notice.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+  `;
+  notice.textContent = '<%= t('stomp_base.console.variable_persistence') %>';
+  
+  document.body.appendChild(notice);
+  
+  setTimeout(() => {
+    notice.style.opacity = '1';
+    notice.style.transform = 'translateX(0)';
+  }, 100);
+  
+  setTimeout(() => {
+    notice.style.opacity = '0';
+    notice.style.transform = 'translateX(100%)';
+    setTimeout(() => notice.remove(), 300);
+  }, 3000);
+}
+
+// Show session persistence notice on first command
+let firstCommandExecuted = false;
 function executeTerminalCommand() {
   const input = document.getElementById('terminal-input');
   const command = input.value.trim();
   
   if (!command) return;
+  
+  // Show persistence notice on first command
+  if (!firstCommandExecuted) {
+    showSessionPersistenceNotice();
+    firstCommandExecuted = true;
+  }
   
   // Add to history
   terminalHistory.unshift(command);

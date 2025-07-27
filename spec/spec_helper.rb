@@ -12,6 +12,14 @@
 # Load the StompBase gem (without Rails engine)
 require File.expand_path("../lib/stomp_base", __dir__)
 
+# I18n setup for testing
+require "i18n"
+I18n.load_path = Dir[File.expand_path("../config/locales/*.yml", __dir__)]
+I18n.default_locale = :en
+# rubocop:disable Rails/I18nLocaleAssignment
+I18n.locale = :en
+# rubocop:enable Rails/I18nLocaleAssignment
+
 # Coverage setup
 if ENV["COVERAGE"]
   require "simplecov"
@@ -49,11 +57,13 @@ end
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  # Add exclude patterns to prevent loading Rails demo and vendor files as specs
+  config.exclude_pattern = "**/rails_demo/**/*,**/rails_demo_api/**/*,**/vendor/**/*,**/templates/**/*"
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
-  config.expect_with :rspec do |expectations|
-    # This option will default to `true` in RSpec 4. It makes the `description`
+  config.expect_with :rspec do |expectations| # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
     # defined using `chain`, e.g.:
     #     be_bigger_than(2).and_smaller_than(4).description

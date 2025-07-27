@@ -49,7 +49,7 @@ module StompBase
       return render_error(I18n.t("stomp_base.console.error")) if command.blank?
 
       # Handle session restart
-      if command == '__restart_session__'
+      if command == "__restart_session__"
         clear_session_binding(session_id)
         return render json: { success: true, result: "Session restarted", command_counter: 1 }
       end
@@ -114,14 +114,45 @@ module StompBase
       format_result(result)
     end
 
+    # Class-level session storage to persist across requests
+    @@session_bindings = {}
+    @@session_mutex = Mutex.new
+    @@session_timestamps = {}
+
     def get_or_create_session_binding(session_id)
-      @session_bindings ||= {}
-      @session_bindings[session_id] ||= create_console_binding
+      @@session_mutex.synchronize do
+        # Clean up old sessions (older than 30 minutes)
+        cleanup_old_sessions
+
+        # Create or retrieve session binding
+        unless @@session_bindings[session_id]
+          @@session_bindings[session_id] = create_console_binding
+          @@session_timestamps[session_id] = Time.current
+        end
+
+        # Update timestamp
+        @@session_timestamps[session_id] = Time.current
+        @@session_bindings[session_id]
+      end
     end
 
     def clear_session_binding(session_id)
-      @session_bindings ||= {}
-      @session_bindings.delete(session_id)
+      @@session_mutex.synchronize do
+        @@session_bindings.delete(session_id)
+        @@session_timestamps.delete(session_id)
+      end
+    end
+
+    def cleanup_old_sessions
+      current_time = Time.current
+      expired_sessions = @@session_timestamps.select do |_session_id, timestamp|
+        current_time - timestamp > 30.minutes
+      end
+
+      expired_sessions.each_key do |session_id|
+        @@session_bindings.delete(session_id)
+        @@session_timestamps.delete(session_id)
+      end
     end
 
     def create_console_binding
@@ -226,6 +257,34 @@ module StompBase
       "#{output[0..1000]}... (truncated)"
     rescue StandardError => e
       "#{result} (inspect failed: #{e.message})"
+    end
+
+    # Session management utility methods
+    def active_sessions_count
+      @@session_mutex.synchronize do
+        @@session_bindings.size
+      end
+    end
+
+    def session_info(session_id)
+      @@session_mutex.synchronize do
+        return nil unless @@session_bindings.key?(session_id)
+
+        {
+          session_id: session_id,
+          created_at: @@session_timestamps[session_id],
+          last_accessed: @@session_timestamps[session_id],
+          active: true
+        }
+      end
+    end
+
+    def all_sessions_info
+      @@session_mutex.synchronize do
+        @@session_bindings.keys.map do |session_id|
+          session_info(session_id)
+        end
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ module StompBase
       end
 
       def welcome_message
-        t("stomp_base.console.terminal_welcome")
+        "#{t("stomp_base.console.terminal_welcome")}\n#{t("stomp_base.console.terminal_help")}"
       end
     end
   end
