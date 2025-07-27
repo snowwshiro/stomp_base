@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-07-27
+
+### Added
+- **Terminal-Style Console Interface**: Complete redesign of the browser console
+  - Real terminal-like experience with command history and session persistence
+  - Session state management to maintain console state across page reloads
+  - Responsive design optimized for both desktop and mobile devices
+  - Comprehensive Japanese and English translations
+- **Enhanced Documentation**: Comprehensive documentation for API-only Rails support and authentication features
+
+### Improved
+- **Console Functionality**: Enhanced console session management and user experience
+- **Test Coverage**: Added comprehensive tests for terminal console interface
+- **Responsive Design**: Improved mobile and tablet compatibility for console interface
+
+### Fixed
+- **Timezone Dependencies**: Resolved timezone dependency issues in console specifications
+- **Session Persistence**: Fixed console session state persistence across browser reloads
+
 ## [0.2.1] - 2025-06-28
 
 ### Added
@@ -18,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Rails Demo API**: Complete API-only Rails demonstration application
   - Sample models, migrations, and authentication specifications
   - Proper bin/ directory with Rails binstubs
-  - Complete environment configurations
 
 ### Changed
 - **Settings Controller**: Improved settings save functionality with proper flash message handling
@@ -83,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🔧 Easy Integration: Simple gem installation and mounting process
 - 🔐 Built-in Authentication: Simple authentication options (Basic Auth, API keys, Custom)
 
+[0.2.2]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.2.2
 [0.2.1]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.2.1
 [0.2.0]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.2.0
 [0.1.0]: https://github.com/snowwshiro/stomp_base/releases/tag/v0.1.0
