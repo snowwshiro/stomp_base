@@ -43,40 +43,50 @@ module StompBase
 
     def execute
       command = params[:command]&.strip
+      session_id = params[:session_id]
+      command_counter = params[:command_counter]&.to_i || 1
+
       return render_error(I18n.t("stomp_base.console.error")) if command.blank?
 
-      process_console_command(command)
+      # Handle session restart
+      if command == "__restart_session__"
+        clear_session_binding(session_id)
+        return render json: { success: true, result: "Session restarted", command_counter: 1 }
+      end
+
+      process_console_command(command, session_id, command_counter)
     rescue StandardError => e
-      handle_execution_error(e)
+      handle_execution_error(e, command_counter)
     end
 
-    def process_console_command(command)
+    def process_console_command(command, session_id, command_counter)
       Rails.logger.info "StompBase Console Command: #{command}"
       return render_dangerous_command_error if dangerous_command?(command)
 
-      result = execute_in_rails_console(command)
-      render_success(result)
+      result = execute_in_rails_console(command, session_id)
+      render_success(result, command_counter)
     end
 
-    def handle_execution_error(error)
+    def handle_execution_error(error, command_counter = 1)
       Rails.logger.error "StompBase Console Error: #{error.message}"
-      render_error(error.message)
+      render_error(error.message, command_counter)
     end
 
     private
 
-    def render_error(message)
-      render json: { success: false, error: message, result: nil }
+    def render_error(message, command_counter = 1)
+      render json: { success: false, error: message, result: nil, command_counter: command_counter }
     end
 
-    def render_success(result)
-      render json: { success: true, result: result.to_s, error: false }
+    def render_success(result, command_counter = 1)
+      render json: { success: true, result: result.to_s, error: false, command_counter: command_counter }
     end
 
     def render_dangerous_command_error
       render json: {
         success: false,
-        error: "Dangerous command detected. Execution denied."
+        error: "Dangerous command detected. Execution denied.",
+        command_counter: 1
       }
     end
 
@@ -90,10 +100,10 @@ module StompBase
       DANGEROUS_PATTERNS.any? { |pattern| command.match?(pattern) }
     end
 
-    def execute_in_rails_console(command)
+    def execute_in_rails_console(command, session_id)
       # Evaluate command in secure execution environment
-      # Simulate basic Rails console environment
-      binding_context = create_console_binding
+      # Maintain session state for each session_id
+      binding_context = get_or_create_session_binding(session_id)
 
       # Set timeout (10 seconds)
       result = Timeout.timeout(10) do
@@ -102,6 +112,47 @@ module StompBase
 
       # Return result in user-friendly format
       format_result(result)
+    end
+
+    # Class-level session storage to persist across requests
+    @@session_bindings = {}
+    @@session_mutex = Mutex.new
+    @@session_timestamps = {}
+
+    def get_or_create_session_binding(session_id)
+      @@session_mutex.synchronize do
+        # Clean up old sessions (older than 30 minutes)
+        cleanup_old_sessions
+
+        # Create or retrieve session binding
+        unless @@session_bindings[session_id]
+          @@session_bindings[session_id] = create_console_binding
+          @@session_timestamps[session_id] = Time.current
+        end
+
+        # Update timestamp
+        @@session_timestamps[session_id] = Time.current
+        @@session_bindings[session_id]
+      end
+    end
+
+    def clear_session_binding(session_id)
+      @@session_mutex.synchronize do
+        @@session_bindings.delete(session_id)
+        @@session_timestamps.delete(session_id)
+      end
+    end
+
+    def cleanup_old_sessions
+      current_time = Time.current
+      expired_sessions = @@session_timestamps.select do |_session_id, timestamp|
+        current_time - timestamp > 30.minutes
+      end
+
+      expired_sessions.each_key do |session_id|
+        @@session_bindings.delete(session_id)
+        @@session_timestamps.delete(session_id)
+      end
     end
 
     def create_console_binding
@@ -206,6 +257,34 @@ module StompBase
       "#{output[0..1000]}... (truncated)"
     rescue StandardError => e
       "#{result} (inspect failed: #{e.message})"
+    end
+
+    # Session management utility methods
+    def active_sessions_count
+      @@session_mutex.synchronize do
+        @@session_bindings.size
+      end
+    end
+
+    def session_info(session_id)
+      @@session_mutex.synchronize do
+        return nil unless @@session_bindings.key?(session_id)
+
+        {
+          session_id: session_id,
+          created_at: @@session_timestamps[session_id],
+          last_accessed: @@session_timestamps[session_id],
+          active: true
+        }
+      end
+    end
+
+    def all_sessions_info
+      @@session_mutex.synchronize do
+        @@session_bindings.keys.map do |session_id|
+          session_info(session_id)
+        end
+      end
     end
   end
 end

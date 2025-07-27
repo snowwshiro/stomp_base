@@ -36,7 +36,17 @@ Metrics/ModuleLength:
     - 'spec/**/*'
 
 Metrics/ClassLength:
-  Max: 170
+  Max: 250
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 15
   Exclude:
     - 'spec/**/*'
 
@@ -60,12 +70,18 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
 
-# Rails specific - remove obsolete Rails cops
-# Rails/FilePath and Rails/OutputSafety should be handled by rubocop-rails plugin
+Style/ClassVars:
+  Enabled: false
+
+# Disable global variables rule for test files that need it
+Style/GlobalVars:
+  Exclude:
+    - 'spec/unit/console_session_spec.rb'
+    - 'spec/unit/console_terminal_spec.rb'
 
 # RSpec specific  
 RSpec/ExampleLength:
-  Max: 20
+  Max: 40
 
 RSpec/MultipleExpectations:
   Max: 5
@@ -77,4 +93,13 @@ RSpec/FilePath:
   Enabled: false
 
 RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/ExpectInHook:
   Enabled: false

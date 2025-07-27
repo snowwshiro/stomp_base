@@ -9,10 +9,7 @@ RSpec.describe StompBase::Engine do
     context "when Rails application has asset pipeline" do
       let(:app_config) do
         double("app_config").tap do |config|
-          allow(config).to receive(:assets).and_return(double("assets"))
-          allow(config).to receive(:public_file_server).and_return(
-            double("public_file_server", enabled: true)
-          )
+          allow(config).to receive_messages(assets: double("assets"), public_file_server: double("public_file_server", enabled: true))
         end
       end
 

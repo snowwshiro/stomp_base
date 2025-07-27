@@ -271,6 +271,9 @@ StompBase.configure do |config|
   config.locale = :ja                    # Set interface language
   config.available_locales = [:en, :ja]  # Available language options (read-only)
   
+  # Console configuration
+  config.allow_console_in_production = false # Allow console functionality in production (default: false)
+  
   # Authentication options
   config.enable_authentication(          # Enable authentication
     method: :basic_auth,                 # :basic_auth, :api_key, or :custom
@@ -295,6 +298,20 @@ StompBase.enable_authentication(method: :basic_auth, username: 'admin', password
 # Disable authentication
 StompBase.disable_authentication
 ```
+
+### Console Configuration
+
+For security reasons, the Rails console functionality is disabled in production environments by default. You can enable it if needed:
+
+```ruby
+# config/initializers/stomp_base.rb
+StompBase.configure do |config|
+  # Enable console functionality in production (disabled by default for security)
+  config.allow_console_in_production = true
+end
+```
+
+**⚠️ Security Warning**: Enabling console functionality in production environments poses significant security risks. Only enable this feature if you fully understand the implications and have proper security measures in place.
 
 ### Direct Configuration
 
@@ -461,6 +478,8 @@ StompBase.configure do |config|
       method: :api_key,
       keys: [ENV['STOMP_BASE_API_KEY']]
     )
+    # Console disabled in production by default for security
+    # config.allow_console_in_production = true  # Uncomment only if absolutely necessary
   elsif Rails.env.development?
     # Simple authentication for development
     config.enable_authentication(
@@ -468,6 +487,7 @@ StompBase.configure do |config|
       username: 'dev',
       password: 'dev'
     )
+    # Console enabled in development by default
   else
     # Disable authentication for test environment
     config.disable_authentication
@@ -481,6 +501,8 @@ end
 - Use HTTPS (especially when using Basic Authentication)
 - Update API keys regularly
 - Be careful not to output authentication information to log files
+- **Console functionality should remain disabled in production environments** unless absolutely necessary for debugging
+- If console access is required in production, ensure strong authentication is enabled and access is properly logged
 
 ## Implementation Summary
 

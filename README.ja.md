@@ -245,6 +245,9 @@ StompBase.configure do |config|
   config.locale = :ja                    # インターフェース言語の設定
   config.available_locales = [:en, :ja]  # 利用可能な言語オプション（読み取り専用）
   
+  # コンソール設定
+  config.allow_console_in_production = false # 本番環境でコンソール機能を許可（デフォルト: false）
+  
   # 認証オプション
   config.enable_authentication(          # 認証の有効化
     method: :basic_auth,                 # :basic_auth、:api_key、または:custom
@@ -269,6 +272,20 @@ StompBase.enable_authentication(method: :basic_auth, username: 'admin', password
 # 認証の無効化
 StompBase.disable_authentication
 ```
+
+### コンソール設定
+
+セキュリティ上の理由により、Railsコンソール機能は本番環境ではデフォルトで無効になっています。必要に応じて有効にできます：
+
+```ruby
+# config/initializers/stomp_base.rb
+StompBase.configure do |config|
+  # 本番環境でコンソール機能を有効化（セキュリティのためデフォルトで無効）
+  config.allow_console_in_production = true
+end
+```
+
+**⚠️ セキュリティ警告**: 本番環境でコンソール機能を有効にすることは、重大なセキュリティリスクをもたらします。この機能は、影響を十分に理解し、適切なセキュリティ対策を講じている場合にのみ有効にしてください。
 
 ### 直接設定
 
@@ -435,6 +452,8 @@ StompBase.configure do |config|
       method: :api_key,
       keys: [ENV['STOMP_BASE_API_KEY']]
     )
+    # セキュリティのため本番環境ではコンソールはデフォルトで無効
+    # config.allow_console_in_production = true  # 絶対に必要な場合のみコメントアウトを外す
   elsif Rails.env.development?
     # 開発環境ではシンプルな認証
     config.enable_authentication(
@@ -442,6 +461,7 @@ StompBase.configure do |config|
       username: 'dev',
       password: 'dev'
     )
+    # 開発環境ではコンソールはデフォルトで有効
   else
     # テスト環境では認証を無効化
     config.disable_authentication
@@ -455,6 +475,8 @@ end
 - HTTPS を使用してください（特にBasic認証を使用する場合）
 - APIキーは定期的に更新してください
 - 認証情報がログファイルに出力されないよう注意してください
+- **コンソール機能は本番環境では無効のままにしておくべきです** デバッグで絶対に必要な場合を除く
+- 本番環境でコンソールアクセスが必要な場合は、強力な認証を有効にし、アクセスを適切にログに記録してください
 
 ## 実装概要
 

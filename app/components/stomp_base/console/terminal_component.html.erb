@@ -1,0 +1,317 @@
+<!-- Terminal-style Console Interface -->
+<div class="stomp-base-card" style="margin-bottom: 0.75rem; background-color: #1e1e1e; border: 1px solid #333; border-radius: 0.5rem; overflow: hidden;">
+  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; padding: 0.75rem 1rem; background-color: #2d2d2d; border-bottom: 1px solid #333;">
+    <div style="display: flex; align-items: center; min-width: 0;">
+      <svg style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem; color: #10b981; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 002 2z"></path>
+      </svg>
+      <span style="color: #e5e7eb; font-weight: 600; font-size: 0.875rem; white-space: nowrap;">Rails Console</span>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+      <button onclick="clearTerminal()" class="stomp-base-btn" style="padding: 0.375rem 0.75rem; font-size: 0.75rem; background-color: #374151; color: #e5e7eb; border: 1px solid #4b5563; border-radius: 0.375rem; white-space: nowrap;">
+        <%= t('stomp_base.console.clear') %>
+      </button>
+      <button onclick="restartSession()" class="stomp-base-btn" style="padding: 0.375rem 0.75rem; font-size: 0.75rem; background-color: #dc2626; color: #fff; border: 1px solid #dc2626; border-radius: 0.375rem; white-space: nowrap;">
+        Restart
+      </button>
+    </div>
+  </div>
+
+  <!-- Terminal Display Area -->
+  <div 
+    id="terminal-display" 
+    style="height: 400px; max-height: 60vh; overflow-y: auto; padding: 1rem; background-color: #1e1e1e; font-family: 'Courier New', 'Monaco', 'Consolas', monospace; font-size: 0.875rem; line-height: 1.4; color: #e5e7eb;"
+  >
+    <div id="terminal-output">
+      <div style="color: #10b981; margin-bottom: 0.5rem;"><%= welcome_message %></div>
+    </div>
+    <div id="terminal-input-line" style="display: flex; align-items: flex-start; gap: 0.25rem;">
+      <span id="terminal-prompt" style="color: #10b981; flex-shrink: 0; user-select: none; font-size: 0.875rem; line-height: 1.4;"><%= initial_prompt %></span>
+      <div style="flex: 1; min-width: 0; position: relative;">
+        <textarea
+          id="terminal-input"
+          style="width: 100%; min-height: 1.4em; background: transparent; border: none; outline: none; color: #e5e7eb; font-family: inherit; font-size: inherit; line-height: inherit; resize: none; padding: 0; margin: 0; overflow: hidden; word-wrap: break-word;"
+          placeholder="<%= t('stomp_base.console.placeholder') %>"
+          rows="1"
+          onkeydown="handleTerminalKeydown(event)"
+          oninput="adjustTerminalInputHeight()"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden session ID for JavaScript -->
+  <input type="hidden" id="terminal-session-id" value="<%= session_id %>">
+</div>
+
+<style>
+  @media (max-width: 640px) {
+    #terminal-display {
+      height: 300px !important;
+      max-height: 50vh !important;
+      padding: 0.75rem !important;
+      font-size: 0.8125rem !important;
+    }
+    
+    #terminal-input {
+      font-size: 0.8125rem !important;
+    }
+    
+    #terminal-prompt {
+      font-size: 0.8125rem !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #terminal-display {
+      height: 250px !important;
+      max-height: 40vh !important;
+      padding: 0.5rem !important;
+      font-size: 0.75rem !important;
+    }
+    
+    #terminal-input {
+      font-size: 0.75rem !important;
+    }
+    
+    #terminal-prompt {
+      font-size: 0.75rem !important;
+    }
+  }
+</style>
+
+<script>
+// Terminal functionality
+let terminalHistory = [];
+let terminalHistoryIndex = -1;
+let terminalCommandCounter = 1;
+let terminalSessionId = document.getElementById('terminal-session-id').value;
+
+function handleTerminalKeydown(event) {
+  const input = event.target;
+  
+  // Execute on Enter (without Shift)
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    executeTerminalCommand();
+    return;
+  }
+  
+  // Allow Shift+Enter for multi-line input
+  if (event.key === 'Enter' && event.shiftKey) {
+    // Let the default behavior handle the new line
+    setTimeout(() => adjustTerminalInputHeight(), 0);
+    return;
+  }
+  
+  // History navigation with Up/Down arrows
+  if (event.key === 'ArrowUp' && terminalHistory.length > 0) {
+    event.preventDefault();
+    terminalHistoryIndex = Math.min(terminalHistoryIndex + 1, terminalHistory.length - 1);
+    input.value = terminalHistory[terminalHistoryIndex];
+    adjustTerminalInputHeight();
+  } else if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    if (terminalHistoryIndex > 0) {
+      terminalHistoryIndex--;
+      input.value = terminalHistory[terminalHistoryIndex];
+    } else {
+      terminalHistoryIndex = -1;
+      input.value = '';
+    }
+    adjustTerminalInputHeight();
+  }
+}
+
+function adjustTerminalInputHeight() {
+  const input = document.getElementById('terminal-input');
+  input.style.height = 'auto';
+  input.style.height = input.scrollHeight + 'px';
+}
+
+function showSessionPersistenceNotice() {
+  const notice = document.createElement('div');
+  notice.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+  `;
+  notice.textContent = '<%= t('stomp_base.console.variable_persistence') %>';
+  
+  document.body.appendChild(notice);
+  
+  setTimeout(() => {
+    notice.style.opacity = '1';
+    notice.style.transform = 'translateX(0)';
+  }, 100);
+  
+  setTimeout(() => {
+    notice.style.opacity = '0';
+    notice.style.transform = 'translateX(100%)';
+    setTimeout(() => notice.remove(), 300);
+  }, 3000);
+}
+
+// Show session persistence notice on first command
+let firstCommandExecuted = false;
+function executeTerminalCommand() {
+  const input = document.getElementById('terminal-input');
+  const command = input.value.trim();
+  
+  if (!command) return;
+  
+  // Show persistence notice on first command
+  if (!firstCommandExecuted) {
+    showSessionPersistenceNotice();
+    firstCommandExecuted = true;
+  }
+  
+  // Add to history
+  terminalHistory.unshift(command);
+  if (terminalHistory.length > 50) {
+    terminalHistory = terminalHistory.slice(0, 50);
+  }
+  terminalHistoryIndex = -1;
+  
+  // Display command in terminal
+  displayTerminalCommand(command);
+  
+  // Clear input and reset height
+  input.value = '';
+  input.style.height = 'auto';
+  
+  // Execute command via AJAX
+  fetch('<%= StompBase::Engine.routes.url_helpers.console_execute_path %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ 
+      command: command, 
+      session_id: terminalSessionId,
+      command_counter: terminalCommandCounter
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      displayTerminalOutput(data.result, data.command_counter);
+    } else {
+      displayTerminalError(data.error, data.command_counter);
+    }
+    terminalCommandCounter = data.command_counter ? data.command_counter + 1 : terminalCommandCounter + 1;
+    updateTerminalPrompt();
+  })
+  .catch(error => {
+    displayTerminalError(`Network error: ${error.message}`, terminalCommandCounter);
+    terminalCommandCounter++;
+    updateTerminalPrompt();
+  });
+}
+
+function displayTerminalCommand(command) {
+  const output = document.getElementById('terminal-output');
+  const commandDiv = document.createElement('div');
+  commandDiv.innerHTML = `<span style="color: #10b981;">${getCurrentPrompt()}</span>${escapeHtml(command)}`;
+  output.appendChild(commandDiv);
+  scrollTerminalToBottom();
+}
+
+function displayTerminalOutput(result, commandCounter) {
+  const output = document.getElementById('terminal-output');
+  const resultDiv = document.createElement('div');
+  resultDiv.style.color = '#e5e7eb';
+  resultDiv.style.marginBottom = '0.5rem';
+  resultDiv.style.whiteSpace = 'pre-wrap';
+  resultDiv.textContent = result;
+  output.appendChild(resultDiv);
+  scrollTerminalToBottom();
+}
+
+function displayTerminalError(error, commandCounter) {
+  const output = document.getElementById('terminal-output');
+  const errorDiv = document.createElement('div');
+  errorDiv.style.color = '#ef4444';
+  errorDiv.style.marginBottom = '0.5rem';
+  errorDiv.style.whiteSpace = 'pre-wrap';
+  errorDiv.textContent = error;
+  output.appendChild(errorDiv);
+  scrollTerminalToBottom();
+}
+
+function getCurrentPrompt() {
+  return `irb(main):${String(terminalCommandCounter).padStart(3, '0')}:0> `;
+}
+
+function updateTerminalPrompt() {
+  const prompt = document.getElementById('terminal-prompt');
+  prompt.textContent = getCurrentPrompt();
+}
+
+function scrollTerminalToBottom() {
+  const display = document.getElementById('terminal-display');
+  display.scrollTop = display.scrollHeight;
+}
+
+function clearTerminal() {
+  const output = document.getElementById('terminal-output');
+  output.innerHTML = `<div style="color: #10b981; margin-bottom: 0.5rem;"><%= welcome_message %></div>`;
+  terminalCommandCounter = 1;
+  updateTerminalPrompt();
+  document.getElementById('terminal-input').focus();
+}
+
+function restartSession() {
+  if (confirm('Are you sure you want to restart the console session? All variables will be lost.')) {
+    terminalSessionId = generateSessionId();
+    document.getElementById('terminal-session-id').value = terminalSessionId;
+    clearTerminal();
+    
+    // Notify server to clear session
+    fetch('<%= StompBase::Engine.routes.url_helpers.console_execute_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ 
+        command: '__restart_session__', 
+        session_id: terminalSessionId 
+      })
+    });
+  }
+}
+
+function generateSessionId() {
+  return Math.random().toString(36).substr(2, 9);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function insertTerminalCommand(command) {
+  const input = document.getElementById('terminal-input');
+  input.value = command;
+  input.focus();
+  adjustTerminalInputHeight();
+}
+
+// Focus input on page load
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('terminal-input').focus();
+  updateTerminalPrompt();
+});
+</script>
