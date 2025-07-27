@@ -20,11 +20,11 @@ RSpec.describe "Console session state persistence" do
           # Create or retrieve session binding
           unless $test_session_bindings[session_id]
             $test_session_bindings[session_id] = create_console_binding
-            $test_session_timestamps[session_id] = Time.zone.now
+            $test_session_timestamps[session_id] = Time.now
           end
 
           # Update timestamp
-          $test_session_timestamps[session_id] = Time.zone.now
+          $test_session_timestamps[session_id] = Time.now
           $test_session_bindings[session_id]
         end
       end
@@ -41,7 +41,7 @@ RSpec.describe "Console session state persistence" do
       end
 
       def cleanup_old_sessions
-        current_time = Time.zone.now
+        current_time = Time.now
         expired_sessions = $test_session_timestamps.select do |_session_id, timestamp|
           current_time - timestamp > 1800 # 30 minutes in seconds
         end
@@ -139,11 +139,11 @@ RSpec.describe "Console session state persistence" do
             # Create or retrieve session binding
             unless $test_session_bindings[session_id]
               $test_session_bindings[session_id] = create_console_binding
-              $test_session_timestamps[session_id] = Time.zone.now
+              $test_session_timestamps[session_id] = Time.now
             end
 
             # Update timestamp
-            $test_session_timestamps[session_id] = Time.zone.now
+            $test_session_timestamps[session_id] = Time.now
             $test_session_bindings[session_id]
           end
         end
@@ -153,7 +153,7 @@ RSpec.describe "Console session state persistence" do
         end
 
         def cleanup_old_sessions
-          current_time = Time.zone.now
+          current_time = Time.now
           expired_sessions = $test_session_timestamps.select do |_session_id, timestamp|
             current_time - timestamp > 1800 # 30 minutes in seconds
           end
