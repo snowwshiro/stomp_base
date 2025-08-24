@@ -113,4 +113,99 @@ RSpec.describe "StompBase Authentication API" do
       expect(response).to have_http_status(:unauthorized)
     end
   end
+
+  describe "IP Address Authentication" do
+    before do
+      StompBase.configure do |config|
+        config.enable_authentication(
+          method: :ip_auth,
+          allowed_ips: %w[192.168.1.0/24 10.0.0.100 203.0.113.5]
+        )
+      end
+    end
+
+    after do
+      StompBase.configure(&:disable_authentication)
+    end
+
+    context "with allowed IP addresses" do
+      it "allows access from exact IP match" do
+        get "/stomp_base", headers: { "Accept" => "application/json" }, env: { "REMOTE_ADDR" => "10.0.0.100" }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "allows access from IP within CIDR range" do
+        get "/stomp_base", headers: { "Accept" => "application/json" }, env: { "REMOTE_ADDR" => "192.168.1.50" }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "allows access using X-Forwarded-For header" do
+        get "/stomp_base", headers: {
+          "Accept" => "application/json",
+          "X-Forwarded-For" => "203.0.113.5"
+        }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "allows access using X-Real-IP header" do
+        get "/stomp_base", headers: {
+          "Accept" => "application/json",
+          "X-Real-IP" => "192.168.1.200"
+        }
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "with disallowed IP addresses" do
+      it "denies access from non-matching IP" do
+        get "/stomp_base", headers: { "Accept" => "application/json" }, env: { "REMOTE_ADDR" => "172.16.0.1" }
+        expect(response).to have_http_status(:unauthorized)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response).to have_key("error")
+        expect(json_response).to have_key("client_ip")
+        expect(json_response["client_ip"]).to eq("172.16.0.1")
+      end
+
+      it "denies access from IP outside CIDR range" do
+        get "/stomp_base", headers: { "Accept" => "application/json" }, env: { "REMOTE_ADDR" => "192.168.2.50" }
+        expect(response).to have_http_status(:unauthorized)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response["error"]).to include("Access restricted")
+        expect(json_response["error"]).to include("192.168.2.50")
+      end
+
+      it "prioritizes X-Forwarded-For over REMOTE_ADDR for validation" do
+        get "/stomp_base", headers: {
+          "Accept" => "application/json",
+          "X-Forwarded-For" => "172.16.0.1"  # Not allowed
+        }, env: { "REMOTE_ADDR" => "192.168.1.50" }  # Would be allowed
+        
+        expect(response).to have_http_status(:unauthorized)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response["client_ip"]).to eq("172.16.0.1")
+      end
+    end
+
+    context "error responses" do
+      it "returns JSON error response when Accept header is JSON" do
+        get "/stomp_base", headers: { "Accept" => "application/json" }, env: { "REMOTE_ADDR" => "172.16.0.1" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.content_type).to include("application/json")
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response).to have_key("error")
+        expect(json_response).to have_key("client_ip")
+      end
+
+      it "returns plain text error response for HTML requests" do
+        get "/stomp_base", env: { "REMOTE_ADDR" => "172.16.0.1" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.body).to include("Access restricted")
+        expect(response.body).to include("172.16.0.1")
+      end
+    end
+  end
 end
