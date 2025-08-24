@@ -1,0 +1,51 @@
+/*
+ * Form component styles
+ * Form elements, inputs, selects and form layouts
+ */
+
+.stomp-base-form-group {
+  margin-bottom: var(--space-2rem);
+}
+
+.stomp-base-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stomp-base-form-description {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-1rem);
+}
+
+.stomp-base-form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: var(--space-1) solid var(--color-border-light);
+  border-radius: var(--radius-md);
+}
+
+.stomp-base-form-actions {
+  display: flex;
+  gap: var(--space-1rem);
+}
+
+.stomp-base-btn-save {
+  padding: 0.75rem var(--space-2rem);
+  background: var(--color-blue-alt);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.stomp-base-btn-reset {
+  padding: 0.75rem var(--space-2rem);
+  background: var(--color-gray-500);
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+}

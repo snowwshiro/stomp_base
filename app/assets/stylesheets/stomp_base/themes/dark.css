@@ -1,0 +1,93 @@
+/*
+ * Dark theme styles
+ * Dark mode color overrides
+ */
+
+body.stomp-base-theme-dark .stomp-base-layout {
+  background-color: var(--color-gray-900);
+  color: var(--color-gray-50);
+}
+
+body.stomp-base-theme-dark .stomp-base-main-content {
+  background-color: var(--color-gray-900);
+}
+
+body.stomp-base-theme-dark .stomp-base-card,
+body.stomp-base-theme-dark .stomp-base-card-compact {
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-50);
+  border: var(--space-1) solid var(--color-gray-700);
+}
+
+body.stomp-base-theme-dark .stomp-base-card:hover,
+body.stomp-base-theme-dark .stomp-base-card-compact:hover {
+  background-color: var(--color-legacy-blue);
+  border-color: var(--color-gray-600);
+}
+
+body.stomp-base-theme-dark .stomp-base-sidebar {
+  background-color: var(--color-gray-950);
+  border-right-color: var(--color-gray-800);
+}
+
+body.stomp-base-theme-dark .stomp-base-sidebar-header {
+  border-bottom-color: var(--color-gray-800);
+}
+
+body.stomp-base-theme-dark h1,
+body.stomp-base-theme-dark h2,
+body.stomp-base-theme-dark h3,
+body.stomp-base-theme-dark h4,
+body.stomp-base-theme-dark h5,
+body.stomp-base-theme-dark h6 {
+  color: var(--color-gray-50);
+}
+
+body.stomp-base-theme-dark input,
+body.stomp-base-theme-dark select,
+body.stomp-base-theme-dark textarea {
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-50);
+  border-color: var(--color-gray-700);
+}
+
+body.stomp-base-theme-dark input:focus,
+body.stomp-base-theme-dark select:focus,
+body.stomp-base-theme-dark textarea:focus {
+  border-color: var(--color-blue-500);
+}
+
+body.stomp-base-theme-dark .stomp-base-progress-bar {
+  background-color: var(--color-gray-700);
+}
+
+body.stomp-base-theme-dark .stomp-base-badge {
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-200);
+  border-color: var(--color-gray-600);
+}
+
+/* Dark theme overrides for settings */
+body.stomp-base-theme-dark .stomp-base-settings-title {
+  color: var(--color-gray-50);
+}
+
+body.stomp-base-theme-dark .stomp-base-settings-card {
+  background: var(--color-gray-800);
+  border: var(--space-1) solid var(--color-gray-700);
+}
+
+body.stomp-base-theme-dark .stomp-base-settings-header {
+  background: var(--color-gray-950);
+  border-bottom: var(--space-1) solid var(--color-gray-700);
+}
+
+body.stomp-base-theme-dark .stomp-base-form-description {
+  color: var(--color-gray-300);
+}
+
+body.stomp-base-theme-dark .stomp-base-form-select {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+  color: var(--color-gray-50);
+}

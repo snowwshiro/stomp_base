@@ -110,3 +110,4 @@ Thumbs.db
 # Coverage reports
 /coverage/
 /coverage.lcov
+*.backup

@@ -1,0 +1,96 @@
+/*
+ * CSS Custom Properties and Design Tokens
+ * Central repository for all design system values
+ */
+
+:root {
+  /* Color Palette */
+  --color-white: #ffffff;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #e5e7eb;
+  --color-gray-200: #d1d5db;
+  --color-gray-300: #9ca3af;
+  --color-gray-400: #6b7280;
+  --color-gray-500: #6c757d;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #0f172a;
+
+  /* Brand Colors */
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-alt: #3498db;
+  
+  --color-green-500: #10b981;
+  --color-yellow-500: #f59e0b;
+  --color-purple-500: #8b5cf6;
+  
+  /* Legacy Colors */
+  --color-legacy-dark: #2c3e50;
+  --color-legacy-blue: #243147;
+  --color-border-light: #ddd;
+
+  /* Spacing Scale */
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-15: 15px;
+  --space-1rem: 1rem;
+  --space-2rem: 2rem;
+  --space-5rem: 5rem;
+  --space-8rem: 8rem;
+  --space-10rem: 10rem;
+  --space-12rem: 12rem;
+  --space-24rem: 24rem;
+  --space-25rem: 25rem;
+
+  /* Container Sizes */
+  --container-xs: 375rem;
+  --container-sm: 480px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 75rem;
+  --container-3xl: 87.5rem;
+  --container-4xl: 62.5rem;
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Typography */
+  --font-family-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
+  
+  /* Component Specific */
+  --sidebar-width: 12rem;
+  --sidebar-bg: var(--color-gray-800);
+  --sidebar-border: var(--color-gray-700);
+  
+  --main-bg: var(--color-gray-50);
+  --content-bg: var(--color-white);
+  --content-border: var(--color-gray-200);
+  
+  /* Z-index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+}
